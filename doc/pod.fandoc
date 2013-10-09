@@ -1,13 +1,14 @@
 Overview [#overview]
 ********************
-A library for providing @Inject'able config values.
+A library for providing injectable config values.
 
 
 
 Quick Start [#quickStart]
 *************************
 pre>
-  Example here
+  @Inject @Config { "afBedSheet.gzip.threshold" }
+  private Int gzipThreshold
 <pre
 
 
@@ -18,3 +19,4 @@ Release Notes [#releaseNotes]
 v0.0.2 [#v0.0.2]
 ----------------
  - New: Preview Release
+
