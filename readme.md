@@ -1,12 +1,14 @@
 # IocConfig
 
-IocConfig is a [Fantom](http://fantom.org/) library for for providing @Inject'able config values.
+IocConfig is a [Fantom](http://fantom.org/) library for for providing injectable config values.
 
 
 
 ## Quick Start
 
-    Example here
+    @Inject @Config { "afBedSheet.gzip.threshold" }
+    private Int gzipThreshold
+
 
 
 ## Documentation
