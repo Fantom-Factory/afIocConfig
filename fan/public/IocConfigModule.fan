@@ -1,4 +1,7 @@
-using afIoc
+using afIoc::ServiceBinder
+using afIoc::Contribute
+using afIoc::DependencyProviderSource
+using afIoc::OrderedConfig
 
 ** The [afIoc]`http://repo.status302.com/doc/afIoc/#overview` module class.
 ** 
@@ -14,10 +17,9 @@ class IocConfigModule {
 	}
 	
 	@NoDoc
-	@Contribute 
+	@Contribute { serviceType=DependencyProviderSource# }
 	static Void contributeDependencyProviderSource(OrderedConfig conf) {
 		configProvider := conf.autobuild(ConfigProvider#)
 		conf.add(configProvider)
 	}
-
 }

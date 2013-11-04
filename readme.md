@@ -1,6 +1,9 @@
 # IocConfig
 
-IocConfig is a [Fantom](http://fantom.org/) library for for providing injectable config values.
+*IocConfig is a support library and exists to aid the development of other Alien-Factory libraries and frameworks.
+Though you are welcome to use it, you may find features are missing and the documentation incomplete.*
+
+`IocConfig` is a [Fantom](http://fantom.org/) library for for providing injectable config values.
 
 
 
