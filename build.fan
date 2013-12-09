@@ -5,7 +5,7 @@ class Build : BuildPod {
 	new make() {
 		podName = "afIocConfig"
 		summary = "(Internal) A library for providing injectable config values"
-		version = Version([0,0,3])
+		version = Version("0.0.3")
 
 		meta	= [	"org.name"		: "Alien-Factory",
 					"org.uri"		: "http://www.alienfactory.co.uk/",
