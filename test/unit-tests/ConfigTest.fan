@@ -1,10 +1,6 @@
 
 abstract internal class ConfigTest : Test {
 	
-	Void verifyConfigErrMsg(Str errMsg, |Obj| func) {
-		verifyErrTypeMsg(IocConfigErr#, errMsg, func)
-	}
-
 	private Void verifyErrTypeMsg(Type errType, Str errMsg, |Obj| func) {
 		try {
 			func(4)
@@ -21,5 +17,4 @@ abstract internal class ConfigTest : Test {
 		}
 		throw Err("$errType not thrown")
 	}
-	
 }

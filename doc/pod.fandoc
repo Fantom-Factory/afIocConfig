@@ -1,23 +1,135 @@
 Overview [#overview]
 ********************
-*'IocConfig' is a support library and exists to aid the development of other Alien-Factory libraries and frameworks.
-Though you are welcome to use it, you may find features are missing and the documentation incomplete.*
 
-A library for providing injectable config values.
+'IocConfig' is an [Ioc]`http://www.fantomfactory.org/pods/afIoc` library for providing injectable config values.
+
+Config values are essentially constants, but their value can be overridden on registry startup.
+
+This makes them great for use by 3rd party libraries which can set default values. Applications that use these libraries may then optionally override
+these default values.
+
+
+
+Install [#install]
+******************
+Install 'IocConfig' with the [Fantom Respository Manager]`http://fantom.org/doc/docFanr/Tool.html#install`:
+
+  C:\> fanr install -r http://repo.status302.com/fanr/ afIocConfig
+
+Or to install manually, download the pod from [Status302]`http://repo.status302.com/browse/afIocConfig` and copy it to '%FAN_HOME%/lib/fan/'.
+
+To use in a Fantom project, add a dependency to its 'build.fan':
+
+  depends = ["sys 1.0", ..., "afIocConfig 1.0+"]
 
 
 
 Quick Start [#quickStart]
 *************************
+1). Create a text file called 'Example.fan':
+
 pre>
-  @Inject @Config { "afBedSheet.gzip.threshold" }
-  private Int gzipThreshold
+using afIoc
+using afIocConfig
+
+class Example {
+    @Config { id="my.number" }
+    @Inject Int? myNumber
+
+    Void print() {
+        echo("My number is ${myNumber}")
+    }
+}
+
+class AppModule {
+    static Void bind(ServiceBinder binder) {
+        binder.bindImpl(Example#)
+    }
+
+    @Contribute { serviceType=ApplicationDefaults# }
+    static Void contributeApplicationDefaults(MappedConfig config) {
+        // applications override factory defaults
+        config["my.number"] = "69"
+    }
+}
+
+class OtherModule {
+    @Contribute { serviceType=FactoryDefaults# }
+    static Void contributeFactoryDefaults(MappedConfig config) {
+        // 3rd party libraries set factory defaults
+        config["my.number"] = "666"
+    }
+}
+
+// ---- Standard Support Class ----
+
+class Main {
+    Void main() {
+        registry := RegistryBuilder().addModules([AppModule#, OtherModule#, IocConfigModule#]).build.startup
+
+        example  := (Example) registry.dependencyByType(Example#)
+        example.print()  // --> 69
+
+        registry.shutdown()
+    }
+}
 <pre
+
+2). Run 'Example.fan' as a Fantom script from the command line:
+pre>
+C:\> fan Example.fan
+...
+Ioc started up in 1,507ms
+
+My number is 69
+<pre
+
+
+
+Usage [#usage]
+**************
+All config values are referenced by a unique config 'id' (a string). This id is used to set a factory default value, application values
+and to inject the value in to a service.
+
+Start by setting a default value by contributing to the `FactoryDefaults` service in your 'AppModule':
+
+    @Contribute { serviceType=FactoryDefaults# }
+    static Void contributeFactoryDefaults(MappedConfig config) {
+        config["configId"] = "666"
+    }
+
+Config's may take any value as long as it is immutable (think 'const' class).
+
+Anyone may then easily override your value by contributing to the `ApplicationDefaults` service:
+
+    @Contribute { serviceType=ApplicationDefaults# }
+    static Void contributeApplicationDefaults(MappedConfig config) {
+        config["configId"] = "69"
+    }
+
+Config values may be injected into your service by using the '@Config' facet with the standard
+[Ioc]`http://www.fantomfactory.org/pods/afIoc` '@Inject' facet:
+
+  class MyService {
+      @Config { id="configId" }
+      @Inject File configValue
+
+      ...
+   }
+
+Note that when config values are injected, they are [IoC Type coerced]`http://repo.status302.com/doc/afIoc/TypeCoercer.html`
+to the field type. That means you can contribute 'Str' or 'Uri' values and inject it as a 'File'.
 
 
 
 Release Notes [#releaseNotes]
 *****************************
+
+v1.0.0 [#v1.0.0]
+----------------
+ - New: '@Config' has a default 'id' of the field name it is being injected into.
+ - Chg: Removed 'ConfigSource.getCoerced()' in favour of a default value in 'ConfigSource.get()'.
+ - Chg: Upgraded to [afIoc-1.5.0]`http://www.fantomfactory.org/pods/afIoc`.
 
 v0.0.2 [#v0.0.2]
 ----------------
