@@ -51,6 +51,12 @@ internal class TestConfig : ConfigTest {
 		s01	:= (T_MyService01) reg.serviceById("s01")
 		verifyEq(s01.c08, 69)		
 	}
+	
+	Void testDefaultId() {
+		reg := RegistryBuilder().addModule(T_MyModule01#).build.startup
+		s01	:= (T_MyService01) reg.serviceById("s01")
+		verifyEq(s01.c09, "Got some")		
+	}
 }
 
 @SubModule { modules=[IocConfigModule#] }
@@ -73,6 +79,8 @@ internal class T_MyModule01 {
 		// appDef must override facDefs
 		config.set("c02", null)
 		config.set("c06", null)
+
+		config.set("c09", "Got some")
 	}
 
 	@Contribute { serviceType=ApplicationDefaults# }
@@ -95,6 +103,8 @@ internal class T_MyService01 {
 	@Inject @Config{ id="c07" }	Str? c07
 
 	@Inject @Config{ id="c08" }	Int? c08	// coerce fromStr	
+
+	@Inject @Config	Str? c09
 }
 
 internal class T_MyService02 {

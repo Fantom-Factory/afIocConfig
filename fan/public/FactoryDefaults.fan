@@ -1,8 +1,19 @@
 using afIoc::NotFoundErr
 
-** Contribute to set factory default '@Config' values. Only BedSheet and 3rd Party libraries should 
-** set / contribute factory defaults. Web applications should override factory defaults by 
-** contributing to `ApplicationDefaults`. 
+** (Service) - Contribute to set factory default '@Config' values. Only 3rd Party libraries, such as 
+** [BedSheet]`http://www.fantomfactory.org/pods/afBedSheet` need to set / contribute factory defaults. Applications 
+** should override factory defaults by contributing to `ApplicationDefaults`. 
+** 
+** pre>
+** class AppModule {
+** 
+**   @Contribute { serviceType=FactoryDefaults# }
+**   static Void contributeFactoryDefaults(MappedConfig config) {
+**     config["config.id"] = "Config Value"
+**   }
+** <pre
+** 
+** Config values can be any immutable value.
 ** 
 ** @uses a MappedConfig of 'Str:Obj' of IDs to Objs. Obj values must be immutable.
 const mixin FactoryDefaults {
