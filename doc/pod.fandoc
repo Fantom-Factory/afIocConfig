@@ -128,6 +128,7 @@ Release Notes [#releaseNotes]
 v1.0.0 [#v1.0.0]
 ----------------
  - New: '@Config' has a default 'id' of the field name it is being injected into.
+ - New: 'ConfigProvider' can be configured with bespoke 'Config' facets. (As used by BedSheet.)
  - Chg: Removed 'ConfigSource.getCoerced()' in favour of a default value in 'ConfigSource.get()'.
  - Chg: Upgraded to [afIoc-1.5.0]`http://www.fantomfactory.org/pods/afIoc`.
 
