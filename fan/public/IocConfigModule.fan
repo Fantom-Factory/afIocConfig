@@ -12,11 +12,16 @@ const class IocConfigModule {
 		binder.bindImpl(FactoryDefaults#).withoutProxy		// we gain nuffin by making these proxies
 		binder.bindImpl(ApplicationDefaults#).withoutProxy	// we gain nuffin by making these proxies
 		binder.bindImpl(IocConfigSource#).withoutProxy		// has default values
+		binder.bindImpl(ConfigProvider#)
 	}
 
 	@Contribute { serviceType=DependencyProviderSource# }
-	internal static Void contributeDependencyProviderSource(OrderedConfig conf) {
-		configProvider := conf.autobuild(ConfigProvider#)
+	internal static Void contributeDependencyProviderSource(OrderedConfig conf, ConfigProvider configProvider) {
 		conf.add(configProvider)
+	}
+
+	@Contribute { serviceType=ConfigProvider# }
+	internal static Void contributeConfigProviders(OrderedConfig conf) {
+		conf.add(Config#)
 	}
 }
