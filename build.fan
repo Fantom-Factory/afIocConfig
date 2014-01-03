@@ -23,7 +23,7 @@ class Build : BuildPod {
 				]
 
 
-		depends = ["sys 1.0", "afIoc 1.4+"]
+		depends = ["sys 1.0", "afIoc 1.5+"]
 		srcDirs = [`test/unit-tests/`, `fan/`, `fan/public/`, `fan/internal/`, `fan/internal/utils/`]
 		resDirs = [`doc/`]
 
@@ -31,7 +31,7 @@ class Build : BuildPod {
 		docSrc = true
 
 		// exclude test code when building the pod
-		srcDirs = srcDirs.exclude { it.toStr.startsWith("test/") }
-		resDirs = resDirs.exclude { it.toStr.startsWith("test/") }
+//		srcDirs = srcDirs.exclude { it.toStr.startsWith("test/") }
+//		resDirs = resDirs.exclude { it.toStr.startsWith("test/") }
 	}
 }
