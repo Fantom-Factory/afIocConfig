@@ -33,10 +33,14 @@ internal const class IocConfigSourceImpl : IocConfigSource {
 		if (!config.containsKey(id))
 			throw NotFoundErr(ErrMsgs.configNotFound(id), config.keys)
 		value := config[id]
-		return (value == null) ? null : getState() { it.typeCoercer.coerce(value, coerceTo) }
+		if (value == null) 
+			return null 
+		if (coerceTo == null)
+			return value
+		return getState() { it.typeCoercer.coerce(value, coerceTo) }
 	}
 	
-	private Obj? getState(|ConfigSourceState -> Obj| state) {
+	private Obj? getState(|ConfigSourceState -> Obj?| state) {
 		conState.getState(state)
 	}
 }

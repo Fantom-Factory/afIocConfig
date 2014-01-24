@@ -9,10 +9,10 @@ using afIoc::OrderedConfig
 const class IocConfigModule {
 	
 	internal static Void bind(ServiceBinder binder) {
-		binder.bindImpl(FactoryDefaults#).withoutProxy		// we gain nuffin by making these proxies
-		binder.bindImpl(ApplicationDefaults#).withoutProxy	// we gain nuffin by making these proxies
-		binder.bindImpl(IocConfigSource#).withoutProxy		// has default values
-		binder.bindImpl(ConfigProvider#)
+		binder.bind(FactoryDefaults#).withoutProxy		// we gain nuffin by making these proxies
+		binder.bind(ApplicationDefaults#).withoutProxy	// we gain nuffin by making these proxies
+		binder.bind(IocConfigSource#).withoutProxy		// has default values
+		binder.bind(ConfigProvider#)
 	}
 
 	@Contribute { serviceType=DependencyProviderSource# }
