@@ -14,7 +14,7 @@ internal class Example {
 internal class AppModule {
 
 	static Void bind(ServiceBinder binder) {
-		binder.bindImpl(Example#)
+		binder.bind(Example#)
 	}
 
 	@Contribute { serviceType=ApplicationDefaults# }

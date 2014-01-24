@@ -5,8 +5,8 @@ Overview [#overview]
 
 Config values are essentially constants, but their value can be overridden on registry startup.
 
-This makes them great for use by 3rd party libraries which can set default values. Applications that use these libraries may then optionally override
-these default values.
+This makes them great for use by 3rd party libraries.
+The libraries can set sensible default values, and applications may then optionally override them.
 
 
 
@@ -15,8 +15,6 @@ Install [#install]
 Install 'IocConfig' with the [Fantom Respository Manager]`http://fantom.org/doc/docFanr/Tool.html#install`:
 
   C:\> fanr install -r http://repo.status302.com/fanr/ afIocConfig
-
-Or to install manually, download the pod from [Status302]`http://repo.status302.com/browse/afIocConfig` and copy it to '%FAN_HOME%/lib/fan/'.
 
 To use in a Fantom project, add a dependency to its 'build.fan':
 
@@ -124,6 +122,11 @@ to the field type. That means you can contribute 'Str' or 'Uri' values and injec
 
 Release Notes [#releaseNotes]
 *****************************
+
+v1.0.2 [#v1.0.2]
+----------------
+ - Chg: Upgraded to [afIoc-1.5.2]`http://www.fantomfactory.org/pods/afIoc`.
+ - Bug: 'IocConfigSource.get()' threw an Err if 'coerceTo' type was 'null'.
 
 v1.0.0 [#v1.0.0]
 ----------------

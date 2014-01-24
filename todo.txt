@@ -1,11 +1,5 @@
 
-For 1.0.0
-=========
-
-delete getCoerced
-
-read config from files
-
 For Future
 ==========
-
+Read config from files
+ - Easy for users to do themselves

@@ -62,8 +62,8 @@ internal class TestConfig : ConfigTest {
 @SubModule { modules=[IocConfigModule#] }
 internal class T_MyModule01 {
 	static Void bind(ServiceBinder binder) {
-		binder.bindImpl(T_MyService01#).withId("s01")
-		binder.bindImpl(T_MyService02#).withId("s02")
+		binder.bind(T_MyService01#).withId("s01")
+		binder.bind(T_MyService02#).withId("s02")
 	}	
 
 	@Contribute { serviceType=FactoryDefaults# }

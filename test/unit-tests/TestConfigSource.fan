@@ -10,13 +10,21 @@ internal class TestConfigSource : ConfigTest {
 		// apps (mine included!) will define their OWN config - it's not just about overiding! 
 		verifyEq(s04.c01, "Belgium")
 	}
+
+	Void testBasics_BufFix() {
+		reg := RegistryBuilder().addModule(T_MyModule03#).build.startup
+		src	:= (IocConfigSource) reg.dependencyByType(IocConfigSource#)
+
+		// can't believe I never tested this! get() without a type threw an NPE!
+		verifyEq(src.get("c02"), "Belgium")
+	}
 	
 }
 
 @SubModule { modules=[IocConfigModule#] }
 internal class T_MyModule03 {
 	static Void bind(ServiceBinder binder) {
-		binder.bindImpl(T_MyService04#).withId("s04")
+		binder.bind(T_MyService04#).withId("s04")
 	}	
 
 	@Contribute { serviceType=ApplicationDefaults# }
