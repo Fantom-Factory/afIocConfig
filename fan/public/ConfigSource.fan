@@ -9,12 +9,16 @@ const mixin IocConfigSource {
 	** Return the config value with the given id, optionally coercing it to the given type.
 	@Operator
 	abstract Obj? get(Str id, Type? coerceTo := null)
+	
+	** Returns a case-insensitive map of all the config values
+	abstract Str:Obj? config()
+	
 }
 
 internal const class IocConfigSourceImpl : IocConfigSource {
-	private const ConcurrentState 	conState	:= ConcurrentState(ConfigSourceState#)
+	private const ConcurrentState 	conState	:= ConcurrentState(TypeCoercer#)
 
-	private const Str:Obj config
+	override const Str:Obj? config
 
 	@Inject  
 	private const FactoryDefaults	factoryDefaults
@@ -35,16 +39,8 @@ internal const class IocConfigSourceImpl : IocConfigSource {
 		value := config[id]
 		if (value == null) 
 			return null 
-		if (coerceTo == null)
+		if (coerceTo == null || value.typeof.fits(coerceTo))
 			return value
-		return getState() { it.typeCoercer.coerce(value, coerceTo) }
-	}
-	
-	private Obj? getState(|ConfigSourceState -> Obj?| state) {
-		conState.getState(state)
-	}
-}
-
-internal class ConfigSourceState {
-	TypeCoercer	typeCoercer	:= TypeCoercer()
+		return conState.getState() |TypeCoercer typeCoercer -> Obj?| { typeCoercer.coerce(value, coerceTo) }
+	}	
 }
