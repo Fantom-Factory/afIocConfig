@@ -1,7 +1,4 @@
-using afIoc::ServiceBinder
-using afIoc::Contribute
-using afIoc::DependencyProviderSource
-using afIoc::OrderedConfig
+using afIoc
 
 ** The [Ioc]`http://www.fantomfactory.org/pods/afIoc` module class.
 ** 

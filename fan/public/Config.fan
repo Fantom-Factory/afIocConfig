@@ -4,7 +4,7 @@
 **   @Inject @Config { id="gzipThreshold" }
 **   private Int gzipThreshold
 ** 
-** If id is not provided, it takes on the name of the field. Therefore the following is identical to the above:
+** If 'id' is not provided, it takes on the name of the field. Therefore the following is identical to the above:
 ** 
 **   @Inject @Config
 **   private Int gzipThreshold

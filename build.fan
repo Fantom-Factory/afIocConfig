@@ -5,16 +5,16 @@ class Build : BuildPod {
 	new make() {
 		podName = "afIocConfig"
 		summary = "An IoC library for providing injectable config values"
-		version = Version("1.0.3")
+		version = Version("1.0.4")
 
 		meta = [
 			"org.name"		: "Alien-Factory",
 			"org.uri"		: "http://www.alienfactory.co.uk/",
-			"proj.name"		: "Ioc Config",
+			"proj.name"		: "IoC Config",
 			"proj.uri"		: "http://www.fantomfactory.org/pods/afIocConfig",
 			"vcs.uri"		: "https://bitbucket.org/AlienFactory/afiocconfig",
-			"license.name"	: "BSD 2-Clause License",
-			"repo.private"	: "true"
+			"license.name"	: "The MIT Licence",
+			"repo.private"	: "false"
 
 			,"afIoc.module"	: "afIocConfig::IocConfigModule"
 		]
@@ -24,7 +24,7 @@ class Build : BuildPod {
 		]
 
 		depends = ["sys 1.0", "afIoc 1.5.2+"]
-		srcDirs = [`test/unit-tests/`, `fan/`, `fan/public/`, `fan/internal/`, `fan/internal/utils/`]
+		srcDirs = [`test/unit-tests/`, `fan/`, `fan/public/`, `fan/internal/`]
 		resDirs = [`doc/`]
 
 		docApi = true

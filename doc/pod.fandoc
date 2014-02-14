@@ -122,6 +122,9 @@ to the field type. That means you can contribute 'Str' or 'Uri' values and injec
 
 Release Notes [#releaseNotes]
 *****************************
+v1.0.4 [#v1.0.4]
+----------------
+ - Chg: Exposed the underlying config map in 'IocConfigSource'.
 
 v1.0.2 [#v1.0.2]
 ----------------
