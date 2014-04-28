@@ -1,6 +1,5 @@
 Overview [#overview]
 ********************
-
 'IocConfig' is an [Ioc]`http://www.fantomfactory.org/pods/afIoc` library for providing injectable config values.
 
 Config values are essentially constants, but their value can be overridden on registry startup.
@@ -122,13 +121,18 @@ to the field type. That means you can contribute 'Str' or 'Uri' values and injec
 
 Release Notes [#releaseNotes]
 *****************************
+v1.0.6 [#v1.0.6]
+----------------
+ - Chg: Updated to [afIoc-1.5.6]`http://www.fantomfactory.org/pods/afIoc`.
+ - Chg: Replaced 'ConcurrentState' usage with new 'const TypeCoercer'.
+
 v1.0.4 [#v1.0.4]
 ----------------
  - Chg: Exposed the underlying config map in 'IocConfigSource'.
 
 v1.0.2 [#v1.0.2]
 ----------------
- - Chg: Upgraded to [afIoc-1.5.2]`http://www.fantomfactory.org/pods/afIoc`.
+ - Chg: Updated to [afIoc-1.5.2]`http://www.fantomfactory.org/pods/afIoc`.
  - Bug: 'IocConfigSource.get()' threw an Err if 'coerceTo' type was 'null'.
 
 v1.0.0 [#v1.0.0]

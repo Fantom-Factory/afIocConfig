@@ -1,4 +1,3 @@
-using afIoc::ConcurrentState
 using afIoc::Inject
 using afIoc::NotFoundErr
 using afIoc::TypeCoercer
@@ -16,7 +15,7 @@ const mixin IocConfigSource {
 }
 
 internal const class IocConfigSourceImpl : IocConfigSource {
-	private const ConcurrentState 	conState	:= ConcurrentState(TypeCoercer#)
+	private const TypeCoercer typeCoercer := TypeCoercer()
 
 	override const Str:Obj? config
 
@@ -41,6 +40,6 @@ internal const class IocConfigSourceImpl : IocConfigSource {
 			return null 
 		if (coerceTo == null || value.typeof.fits(coerceTo))
 			return value
-		return conState.getState() |TypeCoercer typeCoercer -> Obj?| { typeCoercer.coerce(value, coerceTo) }
+		return typeCoercer.coerce(value, coerceTo)
 	}	
 }
