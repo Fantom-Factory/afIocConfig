@@ -5,7 +5,7 @@ class Build : BuildPod {
 	new make() {
 		podName = "afIocConfig"
 		summary = "An IoC library for providing injectable config values"
-		version = Version("1.0.6")
+		version = Version("1.0.7")
 
 		meta = [
 			"org.name"		: "Alien-Factory",
@@ -14,7 +14,7 @@ class Build : BuildPod {
 			"proj.uri"		: "http://www.fantomfactory.org/pods/afIocConfig",
 			"vcs.uri"		: "https://bitbucket.org/AlienFactory/afiocconfig",
 			"license.name"	: "The MIT Licence",
-			"repo.private"	: "false"
+			"repo.private"	: "true"
 
 			,"afIoc.module"	: "afIocConfig::IocConfigModule"
 		]
