@@ -1,6 +1,6 @@
 Overview [#overview]
 ********************
-'IocConfig' is an [Ioc]`http://www.fantomfactory.org/pods/afIoc` library for providing injectable config values.
+'IoC Config' is an [Ioc]`http://www.fantomfactory.org/pods/afIoc` library for providing injectable config values.
 
 Config values are essentially constants, but their value can be overridden on registry startup.
 
