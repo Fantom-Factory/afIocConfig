@@ -57,6 +57,12 @@ internal class TestConfig : ConfigTest {
 		s01	:= (T_MyService01) reg.serviceById("s01")
 		verifyEq(s01.c09, "Got some")		
 	}
+
+	Void testDefaultIdWithPodName() {
+		reg := RegistryBuilder().addModule(T_MyModule01#).build.startup
+		s01	:= (T_MyService01) reg.serviceById("s01")
+		verifyEq(s01.c10, "Got milk?")		
+	}
 }
 
 @SubModule { modules=[IocConfigModule#] }
@@ -81,6 +87,7 @@ internal class T_MyModule01 {
 		config.set("c06", null)
 
 		config.set("c09", "Got some")
+		config.set("afIocConfig.c10", "Got milk?")
 	}
 
 	@Contribute { serviceType=ApplicationDefaults# }
@@ -105,6 +112,7 @@ internal class T_MyService01 {
 	@Inject @Config{ id="c08" }	Int? c08	// coerce fromStr	
 
 	@Inject @Config	Str? c09
+	@Inject @Config	Str? c10
 }
 
 internal class T_MyService02 {

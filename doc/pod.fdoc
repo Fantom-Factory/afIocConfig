@@ -1,6 +1,6 @@
 Overview [#overview]
 ********************
-'IoC Config' is an [Ioc]`http://www.fantomfactory.org/pods/afIoc` library for providing injectable config values.
+'IoC Config' is an [IoC]`pod:afIoc` library for providing injectable config values.
 
 Config values are essentially constants, but their value can be overridden on registry startup.
 
@@ -9,15 +9,21 @@ The libraries can set sensible default values, and applications may then optiona
 
 
 
-Install [#install]
+Install [#Install]
 ******************
-Install 'IocConfig' with the [Fantom Respository Manager]`http://fantom.org/doc/docFanr/Tool.html#install`:
+Install '@{project.name}' with the Fantom Repository Manager ( [fanr]`docFanr::Tool.install` ):
 
-  C:\> fanr install -r http://repo.status302.com/fanr/ afIocConfig
+  C:\> fanr install -r http://repo.status302.com/fanr/ @{pod.name}
 
-To use in a Fantom project, add a dependency to its 'build.fan':
+To use in a [Fantom]`http://fantom.org/` project, add a dependency to 'build.fan':
 
-  depends = ["sys 1.0", ..., "afIocConfig 1.0+"]
+  depends = ["sys 1.0", ..., "@{pod.name} @{pod.version}+"]
+
+
+
+Documentation [#documentation]
+******************************
+Full API & fandocs are available on the [Status302 repository]`http://repo.status302.com/doc/@{pod.name}/#overview`.
 
 
 
@@ -76,7 +82,7 @@ class Main {
 pre>
 C:\> fan Example.fan
 ...
-Ioc started up in 1,507ms
+IoC started up in 507ms
 
 My number is 69
 <pre
@@ -105,7 +111,7 @@ Anyone may then easily override your value by contributing to the `ApplicationDe
     }
 
 Config values may be injected into your service by using the '@Config' facet with the standard
-[Ioc]`http://www.fantomfactory.org/pods/afIoc` '@Inject' facet:
+[IoC]`pod:afIoc` '@Inject' facet:
 
   class MyService {
       @Config { id="configId" }
@@ -114,8 +120,23 @@ Config values may be injected into your service by using the '@Config' facet wit
       ...
    }
 
-Note that when config values are injected, they are [IoC Type coerced]`http://repo.status302.com/doc/afIoc/TypeCoercer.html`
+Note that when config values are injected, they are [IoC Type coerced]`afIoc::TypeCoercer`
 to the field type. That means you can contribute 'Str' or 'Uri' values and inject it as a 'File'.
+
+If an 'id' is not supplied in '@Config' then it is inferred from the field name and containing pod.
+For example, if type 'MongoMgr' in pod 'myMongo' looked like:
+
+pre>
+class MongoMgr {
+
+    @Config
+    @Inject Url mongoUrl
+
+    ...
+}
+<pre
+
+Then the id 'myMongo.mongoUrl' would be looked up. Failing that, a fallback to just 'mongoUrl' would be attempted.
 
 
 
@@ -123,7 +144,8 @@ Release Notes [#releaseNotes]
 *****************************
 v1.0.6 [#v1.0.6]
 ----------------
- - Chg: Updated to [afIoc-1.5.6]`http://www.fantomfactory.org/pods/afIoc`.
+ - New: Unknown config ids are inferred from the field and pod name.
+ - Chg: Updated to [IoC 1.6.0]`pod:afIoc`.
  - Chg: Replaced 'ConcurrentState' usage with new 'const TypeCoercer'.
 
 v1.0.4 [#v1.0.4]
@@ -132,7 +154,7 @@ v1.0.4 [#v1.0.4]
 
 v1.0.2 [#v1.0.2]
 ----------------
- - Chg: Updated to [afIoc-1.5.2]`http://www.fantomfactory.org/pods/afIoc`.
+ - Chg: Updated to [IoC 1.5.2]`pod:afIoc`.
  - Bug: 'IocConfigSource.get()' threw an Err if 'coerceTo' type was 'null'.
 
 v1.0.0 [#v1.0.0]
@@ -140,7 +162,7 @@ v1.0.0 [#v1.0.0]
  - New: '@Config' has a default 'id' of the field name it is being injected into.
  - New: 'ConfigProvider' can be configured with bespoke 'Config' facets. (As used by BedSheet.)
  - Chg: Removed 'ConfigSource.getCoerced()' in favour of a default value in 'ConfigSource.get()'.
- - Chg: Upgraded to [afIoc-1.5.0]`http://www.fantomfactory.org/pods/afIoc`.
+ - Chg: Upgraded to [IoC 1.5.0]`pod:afIoc`.
 
 v0.0.2 [#v0.0.2]
 ----------------

@@ -29,9 +29,14 @@ const class ConfigProvider : DependencyProvider {
 	}
 
 	override Obj? provide(InjectionCtx ctx) {
+		conSrc	:= configSource
 		config 	:= getConfig(ctx)
-		id 		:= config.typeof.field("id").get(config) ?: ctx.field.name
-		value 	:= configSource.get(id, ctx.dependencyType)
+		id 		:= config.typeof.field("id").get(config) 
+		if (id == null) {
+			qname := "${ctx.field.parent.pod}.${ctx.field.name}"
+			id = conSrc.config.containsKey(qname) ? qname : ctx.field.name
+		}
+		value 	:= conSrc.get(id, ctx.dependencyType)
 		return value
 	}
 	

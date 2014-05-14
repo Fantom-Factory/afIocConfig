@@ -1,7 +1,0 @@
-'IoC Config' is an [IoC]`pod:afIoc` library for providing injectable config values.
-
-Config values are essentially constants, but their value can be overridden on registry startup.
-
-This makes them great for use by 3rd party libraries.
-The libraries can set sensible default values, and applications may then optionally override them.
-
