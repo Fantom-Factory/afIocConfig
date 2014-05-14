@@ -5,19 +5,13 @@ class Build : BuildPod {
 	new make() {
 		podName = "afIocConfig"
 		summary = "An IoC library for providing injectable config values"
-		version = Version("1.0.7")
+		version = Version("1.0.6")
 
 		meta = [
-			"org.name"		: "Alien-Factory",
-			"org.uri"		: "http://www.alienfactory.co.uk/",
 			"proj.name"		: "IoC Config",
-			"proj.uri"		: "http://www.fantomfactory.org/pods/afIocConfig",
-			"vcs.uri"		: "https://bitbucket.org/AlienFactory/afiocconfig",
-			"license.name"	: "The MIT Licence",
-			"repo.private"	: "true",
-
+			"afIoc.module"	: "afIocConfig::IocConfigModule",
 			"tags"			: "system",
-			"afIoc.module"	: "afIocConfig::IocConfigModule"
+			"repo.private"	: "true",
 		]
 
 		index = [	
@@ -31,24 +25,9 @@ class Build : BuildPod {
 		]
 
 		srcDirs = [`test/unit-tests/`, `fan/`, `fan/public/`, `fan/internal/`]
-		resDirs = [`licence.txt`, `doc/`]
+		resDirs = [,]
 
 		docApi = true
 		docSrc = true
-	}
-	
-	@Target { help = "Compile to pod file and associated natives" }
-	override Void compile() {
-		// see "stripTest" in `/etc/build/config.props` to exclude test src & res dirs
-		super.compile
-		
-		// copy src to %FAN_HOME% for F4 debugging
-		log.indent
-		destDir := Env.cur.homeDir.plus(`src/${podName}/`)
-		destDir.delete
-		destDir.create		
-		`fan/`.toFile.copyInto(destDir)		
-		log.info("Copied `fan/` to ${destDir.normalize}")
-		log.unindent
 	}
 }
