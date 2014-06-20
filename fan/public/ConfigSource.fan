@@ -6,6 +6,8 @@ using afBeanUtils::NotFoundErr
 const mixin IocConfigSource {
 	
 	** Return the config value with the given id, optionally coercing it to the given type.
+	** 
+	** Throws 'ArgErr' if the ID could not be found.
 	@Operator
 	abstract Obj? get(Str id, Type? coerceTo := null)
 	
@@ -45,7 +47,8 @@ internal const class IocConfigSourceImpl : IocConfigSource {
 }
 
 ** Thrown when a config ID has not been mapped.
-const class ConfigNotFoundErr : Err, NotFoundErr {
+@NoDoc
+const class ConfigNotFoundErr : ArgErr, NotFoundErr {
 	override const Str?[] availableValues
 	
 	new make(Str msg, Obj?[] availableValues, Err? cause := null) : super(msg, cause) {
