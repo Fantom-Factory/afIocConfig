@@ -1,6 +1,6 @@
 using afIoc::Inject
-using afIoc::NotFoundErr
-using afIoc::TypeCoercer
+using afBeanUtils::TypeCoercer
+using afBeanUtils::NotFoundErr
 
 ** (Service) - Provides the config values. 
 const mixin IocConfigSource {
@@ -15,7 +15,7 @@ const mixin IocConfigSource {
 }
 
 internal const class IocConfigSourceImpl : IocConfigSource {
-	private const TypeCoercer typeCoercer := TypeCoercer()
+	private const TypeCoercer typeCoercer := CachingTypeCoercer()
 
 	override const Str:Obj? config
 
@@ -34,7 +34,7 @@ internal const class IocConfigSourceImpl : IocConfigSource {
 	
 	override Obj? get(Str id, Type? coerceTo := null) {
 		if (!config.containsKey(id))
-			throw NotFoundErr(ErrMsgs.configNotFound(id), config.keys)
+			throw ConfigNotFoundErr(ErrMsgs.configNotFound(id), config.keys)
 		value := config[id]
 		if (value == null) 
 			return null 
@@ -42,4 +42,17 @@ internal const class IocConfigSourceImpl : IocConfigSource {
 			return value
 		return typeCoercer.coerce(value, coerceTo)
 	}	
+}
+
+** Thrown when a config ID has not been mapped.
+const class ConfigNotFoundErr : Err, NotFoundErr {
+	override const Str?[] availableValues
+	
+	new make(Str msg, Obj?[] availableValues, Err? cause := null) : super(msg, cause) {
+		this.availableValues = availableValues.map { it?.toStr }.sort
+	}
+	
+	override Str toStr() {
+		NotFoundErr.super.toStr		
+	}
 }

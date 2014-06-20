@@ -1,4 +1,3 @@
-using afIoc::NotFoundErr
 
 ** (Service) - Contribute to set factory default '@Config' values. Only 3rd Party libraries, such as 
 ** [BedSheet]`http://www.fantomfactory.org/pods/afBedSheet` need to set / contribute factory defaults. Applications 
