@@ -1,4 +1,3 @@
-using afIoc::NotFoundErr
 
 ** (Service) - Contribute to set application default '@Config' values, overriding any factory defaults. 
 **

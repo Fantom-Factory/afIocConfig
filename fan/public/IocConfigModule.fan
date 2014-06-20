@@ -6,13 +6,13 @@ using afIoc
 const class IocConfigModule {
 	
 	internal static Void bind(ServiceBinder binder) {
-		binder.bind(FactoryDefaults#).withoutProxy		// we gain nuffin by making these proxies
-		binder.bind(ApplicationDefaults#).withoutProxy	// we gain nuffin by making these proxies
-		binder.bind(IocConfigSource#).withoutProxy		// has default values
+		binder.bind(FactoryDefaults#)		.withoutProxy	// we gain nuffin by making these proxies
+		binder.bind(ApplicationDefaults#)	.withoutProxy	// we gain nuffin by making these proxies
+		binder.bind(IocConfigSource#)
 		binder.bind(ConfigProvider#)
 	}
 
-	@Contribute { serviceType=DependencyProviderSource# }
+	@Contribute { serviceType=DependencyProviders# }
 	internal static Void contributeDependencyProviderSource(OrderedConfig conf, ConfigProvider configProvider) {
 		conf.add(configProvider)
 	}
