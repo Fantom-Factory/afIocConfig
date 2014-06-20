@@ -5,13 +5,13 @@ class Build : BuildPod {
 	new make() {
 		podName = "afIocConfig"
 		summary = "An IoC library for providing injectable config values"
-		version = Version("1.0.8")
+		version = Version("1.0.9")
 
 		meta = [
 			"proj.name"		: "IoC Config",
 			"afIoc.module"	: "afIocConfig::IocConfigModule",
 			"tags"			: "system",
-			"repo.private"	: "false",
+			"repo.private"	: "true"
 		]
 
 		index = [	
