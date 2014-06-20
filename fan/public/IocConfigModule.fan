@@ -3,6 +3,7 @@ using afIoc
 ** The [Ioc]`http://www.fantomfactory.org/pods/afIoc` module class.
 ** 
 ** This class is public so it may be referenced explicitly in test code.
+@NoDoc
 const class IocConfigModule {
 	
 	internal static Void bind(ServiceBinder binder) {
