@@ -14,12 +14,12 @@ const class IocConfigModule {
 	}
 
 	@Contribute { serviceType=DependencyProviders# }
-	internal static Void contributeDependencyProviderSource(OrderedConfig conf, ConfigProvider configProvider) {
-		conf.add(configProvider)
+	internal static Void contributeDependencyProviderSource(Configuration config, ConfigProvider configProvider) {
+		config["afIocConfig.configProvider"] = configProvider
 	}
 
 	@Contribute { serviceType=ConfigProvider# }
-	internal static Void contributeConfigProviders(OrderedConfig conf) {
-		conf.add(Config#)
+	internal static Void contributeConfigProviders(Configuration config) {
+		config["afIocConfig.config"] = Config#
 	}
 }

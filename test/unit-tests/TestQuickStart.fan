@@ -18,7 +18,7 @@ internal class AppModule {
 	}
 
 	@Contribute { serviceType=ApplicationDefaults# }
-	static Void contributeApplicationDefaults(MappedConfig config) {
+	static Void contributeApplicationDefaults(Configuration config) {
 		// applications override factory defaults
 		config["my.number"] = "69"
 	}
@@ -27,7 +27,7 @@ internal class AppModule {
 internal class OtherModule {
 	
 	@Contribute { serviceType=FactoryDefaults# }
-	static Void contributeFactoryDefaults(MappedConfig config) {
+	static Void contributeFactoryDefaults(Configuration config) {
 		// 3rd party libraries set factory defaults
 		config["my.number"] = "666"
 	}

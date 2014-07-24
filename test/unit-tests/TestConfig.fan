@@ -73,30 +73,30 @@ internal class T_MyModule01 {
 	}	
 
 	@Contribute { serviceType=FactoryDefaults# }
-	static Void cuntFuct(MappedConfig config) {
-		config.set("c01", "Belgium")	// factory value
-		config.set("c03", "UK")			// app override
+	static Void cuntFuct(Configuration config) {
+		config["c01"] = "Belgium"	// factory value
+		config["c03"] = "UK"		// app override
 		
-		config.set("c05", null)			// null factory value
-		config.set("c07", "belgium")	// null factory value
+		config["c05"] = null		// null factory value
+		config["c07"] = "belgium"	// null factory value
 		
-		config.set("c08", "69")			// coerce fromStr
+		config["c08"] = "69"		// coerce fromStr
 
 		// appDef must override facDefs
-		config.set("c02", null)
-		config.set("c06", null)
+		config["c02"] = null
+		config["c06"] = null
 
-		config.set("c09", "Got some")
-		config.set("afIocConfig.c10", "Got milk?")
+		config["c09"] = "Got some"
+		config["afIocConfig.c10"] = "Got milk?"
 	}
 
 	@Contribute { serviceType=ApplicationDefaults# }
-	static Void cuntApp(MappedConfig config) {
-		config.set("c02", "Belgium")	// app value
-		config.set("c03", "Belgium")	// app override
+	static Void cuntApp(Configuration config) {
+		config["c02"] = "Belgium"	// app value
+		config["c03"] = "Belgium"	// app override
 		
-		config.set("c06", null)			// null app value
-		config.set("c07", null)			// null app override
+		config["c06"] = null		// null app value
+		config["c07"] = null		// null app override
 	}
 }
 
