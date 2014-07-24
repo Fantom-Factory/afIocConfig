@@ -7,7 +7,7 @@
 ** class AppModule {
 ** 
 **   @Contribute { serviceType=FactoryDefaults# }
-**   static Void contributeFactoryDefaults(MappedConfig config) {
+**   static Void contributeFactoryDefaults(Configuration config) {
 **     config["config.id"] = "Config Value"
 **   }
 ** <pre
