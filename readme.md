@@ -43,7 +43,7 @@ class AppModule {
     }
 
     @Contribute { serviceType=ApplicationDefaults# }
-    static Void contributeApplicationDefaults(MappedConfig config) {
+    static Void contributeApplicationDefaults(Configuration config) {
         // applications override factory defaults
         config["my.number"] = "69"
     }
@@ -51,7 +51,7 @@ class AppModule {
 
 class OtherModule {
     @Contribute { serviceType=FactoryDefaults# }
-    static Void contributeFactoryDefaults(MappedConfig config) {
+    static Void contributeFactoryDefaults(Configuration config) {
         // 3rd party libraries set factory defaults
         config["my.number"] = "666"
     }
@@ -88,7 +88,7 @@ All config values are referenced by a unique config `id` (a string). This id is 
 Start by setting a default value by contributing to the [FactoryDefaults](http://repo.status302.com/doc/afIocConfig/FactoryDefaults.html) service in your `AppModule`:
 
     @Contribute { serviceType=FactoryDefaults# }
-    static Void contributeFactoryDefaults(MappedConfig config) {
+    static Void contributeFactoryDefaults(Configuration config) {
         config["configId"] = "666"
     }
 
@@ -97,7 +97,7 @@ Config's may take any value as long as it is immutable (think `const` class).
 Anyone may then easily override your value by contributing to the [ApplicationDefaults](http://repo.status302.com/doc/afIocConfig/ApplicationDefaults.html) service:
 
     @Contribute { serviceType=ApplicationDefaults# }
-    static Void contributeApplicationDefaults(MappedConfig config) {
+    static Void contributeApplicationDefaults(Configuration config) {
         config["configId"] = "69"
     }
 
@@ -110,9 +110,9 @@ Config values may be injected into your service by using the `@Config` facet wit
         ...
      }
 
-Note that when config values are injected, they are [IoC Type coerced](http://repo.status302.com/doc/afIoc/TypeCoercer.html) to the field type. That means you can contribute `Str` or `Uri` values and inject it as a `File`.
+Note that when config values are injected, they are [Type coerced](http://repo.status302.com/doc/afBeanUtils/TypeCoercer.html) to the field type. That means you can contribute `Str` or `Uri` values and inject it as a `File`.
 
-If an `id` is not supplied in `@Config` then it is inferred from the field name and containing pod. For example, if type `MongoMgr` in pod `myMongo` looked like:
+If an `id` is not supplied in `@Config` then it is inferred from the field name and containing pod. For example, if Type `MongoMgr` in pod `myMongo` looked like:
 
 ```
 class MongoMgr {
