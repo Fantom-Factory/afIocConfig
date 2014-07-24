@@ -5,14 +5,14 @@
 ** class AppModule {
 ** 
 **   @Contribute { serviceType=ApplicationDefaults# }
-**   static Void contributeApplicationDefaults(MappedConfig config) {
+**   static Void contributeApplicationDefaults(Configuration config) {
 **     config["config.id"] = "Config Value"
 **   }
 ** <pre
 ** 
 ** Config values can be any immutable value.
 ** 
-** @uses a MappedConfig of 'Str:Obj' of IDs to Objs. Obj values must be immutable.
+** @uses a Configuration of 'Str:Obj' of IDs to Objs. Obj values must be immutable.
 const mixin ApplicationDefaults { 
 	@NoDoc
 	abstract Str:Obj? config()
