@@ -28,7 +28,7 @@ internal class T_MyModule03 {
 	}	
 
 	@Contribute { serviceType=ApplicationDefaults# }
-	static Void cuntApp(MappedConfig config) {
+	static Void cuntApp(Configuration config) {
 		config["c02"] = "Belgium"
 	}
 }
