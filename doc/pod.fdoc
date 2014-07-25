@@ -142,8 +142,12 @@ Then the id 'myMongo.mongoUrl' would be looked up. Failing that, a fallback to j
 
 Release Notes [#releaseNotes]
 *****************************
+v1.1.12 [#v1.1.12]
+------------------
+ - Bug: Bodged release - updated to [IoC 1.7.2]`pod:afIoc`.
+
 v1.0.10 [#v1.0.10]
-----------------
+------------------
  - Chg: Updated to [IoC 1.7.0]`pod:afIoc`.
 
 v1.0.8 [#v1.0.8]
