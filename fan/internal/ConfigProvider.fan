@@ -3,49 +3,37 @@ using afIoc::Inject
 using afIoc::InjectionCtx
 using afIoc::Registry
 
-@NoDoc
-const class ConfigProvider : DependencyProvider {
+internal const class ConfigProvider : DependencyProvider {
 	
 	@Inject
 	private const Registry 	registry
-	private const Type[] 	configFacets
 	
-	new make(Type[] configFacets, |This|in) {
-		in(this)
-		configFacets.each {
-			if (!it.fits(Facet#))
-				throw Err(ErrMsgs.typeNotFacet(it))
-			id := it.field("id", false)
-			if (id == null)
-				throw Err(ErrMsgs.facetDoesNotHaveId(it))
-			if (!id.type.fits(Str#) || id.isStatic)
-				throw Err(ErrMsgs.facetDoesNotHaveId(it))
-		}
-		this.configFacets = configFacets
-	}
+	new make(|This|in) { in(this) }
 
 	override Bool canProvide(InjectionCtx ctx) {
-		getConfig(ctx) != null
+		ctx.field != null && ctx.field.hasFacet(Config#)
 	}
 
 	override Obj? provide(InjectionCtx ctx) {
 		conSrc	:= configSource
-		config 	:= getConfig(ctx)
-		id 		:= config.typeof.field("id").get(config) 
-		if (id == null) {
-			qname := "${ctx.field.parent.pod}.${ctx.field.name}"
-			id = conSrc.config.containsKey(qname) ? qname : ctx.field.name
-		}
-		value 	:= conSrc.get(id, ctx.dependencyType)
+		config	:= (Config) Field#.method("facet").callOn(ctx.field, [Config#])	// Stoopid F4
+		id 		:= config.id
+		
+		if (id != null)
+			return conSrc.get(id, ctx.dependencyType)
+		
+		pod		:= ctx.field.parent.pod.name.decapitalize
+		clazz	:= ctx.field.parent.name.decapitalize
+		field	:= ctx.field.name.decapitalize
+		
+		qnames	:= "${field} ${pod}.${field} ${pod}.${clazz}.${field} ${clazz}.${field}".split
+		name	:= qnames.find { conSrc.config.containsKey(it) } ?: throw ConfigNotFoundErr(ErrMsgs.couldNotDetermineId(ctx.field, qnames), conSrc.config.keys)
+		value 	:= conSrc.get(name, ctx.dependencyType)
 		return value
 	}
 	
-	Facet? getConfig(InjectionCtx ctx) {
-		ctx.fieldFacets.find |ff->Bool| { configFacets.any { it.fits(ff.typeof) } }
-	}
-	
-	// lazily load configSource - it got no proxy 'cos of default values in mixin
-	private IocConfigSource configSource() {
-		registry.dependencyByType(IocConfigSource#)
+	** lazily load configSource - it got no proxy 'cos of default values in mixin
+	private ConfigSource configSource() {
+		registry.dependencyByType(ConfigSource#)
 	}
 }

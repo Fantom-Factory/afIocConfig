@@ -13,7 +13,7 @@ internal class TestConfigSource : ConfigTest {
 
 	Void testBasics_BufFix() {
 		reg := RegistryBuilder().addModule(T_MyModule03#).build.startup
-		src	:= (IocConfigSource) reg.dependencyByType(IocConfigSource#)
+		src	:= (ConfigSource) reg.dependencyByType(ConfigSource#)
 
 		// can't believe I never tested this! get() without a type threw an NPE!
 		verifyEq(src.get("c02"), "Belgium")

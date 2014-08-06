@@ -40,28 +40,15 @@ internal class TestConfig : ConfigTest {
 
 	Void testConfigNotExist() {
 		reg := RegistryBuilder().addModule(T_MyModule01#).build.startup
-		try {
-			s02	:= (T_MyService02) reg.serviceById("s02")
-			fail
-		} catch (IocErr e) { }
+		verifyErrMsg(ConfigNotFoundErr#, ErrMsgs.configNotFound("c04")) {
+			s02	:= (T_MyService02) reg.serviceById("s02")			
+		}
 	}
 	
 	Void testCoerceValue() {
 		reg := RegistryBuilder().addModule(T_MyModule01#).build.startup
 		s01	:= (T_MyService01) reg.serviceById("s01")
 		verifyEq(s01.c08, 69)		
-	}
-	
-	Void testDefaultId() {
-		reg := RegistryBuilder().addModule(T_MyModule01#).build.startup
-		s01	:= (T_MyService01) reg.serviceById("s01")
-		verifyEq(s01.c09, "Got some")		
-	}
-
-	Void testDefaultIdWithPodName() {
-		reg := RegistryBuilder().addModule(T_MyModule01#).build.startup
-		s01	:= (T_MyService01) reg.serviceById("s01")
-		verifyEq(s01.c10, "Got milk?")		
 	}
 }
 
@@ -85,9 +72,6 @@ internal class T_MyModule01 {
 		// appDef must override facDefs
 		config["c02"] = null
 		config["c06"] = null
-
-		config["c09"] = "Got some"
-		config["afIocConfig.c10"] = "Got milk?"
 	}
 
 	@Contribute { serviceType=ApplicationDefaults# }
@@ -110,13 +94,9 @@ internal class T_MyService01 {
 	@Inject @Config{ id="c07" }	Str? c07
 
 	@Inject @Config{ id="c08" }	Int? c08	// coerce fromStr	
-
-	@Inject @Config	Str? c09
-	@Inject @Config	Str? c10
 }
 
 internal class T_MyService02 {
 	// c04 doesn't exist
 	@Inject @Config{ id="c04" }	Str? c04
-	
 }
