@@ -1,18 +1,18 @@
 
 abstract internal class ConfigTest : Test {
-	
-	private Void verifyErrTypeMsg(Type errType, Str errMsg, |Obj| func) {
+
+	override Void setup() {
+		Log.get("afIoc").level 		= LogLevel.warn
+	}
+
+	protected Void verifyErrMsg(Type errType, Str errMsg, |Obj| func) {
 		try {
 			func(4)
 		} catch (Err e) {
 			e = e.cause	// unwrap IocErr
-			
 			if (!e.typeof.fits(errType)) 
 				throw Err("Expected $errType got $e.typeof", e)
-			msg := e.msg
-			if (msg != errMsg)
-				verifyEq(errMsg, msg)	// this gives the Str comparator in eclipse
-//				throw Err("Expected: \n - $errMsg \nGot: \n - $msg")
+			verifyEq(errMsg, e.msg)	// this gives the Str comparator in eclipse
 			return
 		}
 		throw Err("$errType not thrown")

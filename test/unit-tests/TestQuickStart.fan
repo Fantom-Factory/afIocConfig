@@ -2,45 +2,31 @@ using afIoc
 //using afIocConfig
 
 internal class Example {
+	@Config { id="my.config" }
+	@Inject Str? myConfig	
+}
 
-	@Config { id="my.number" }
-	@Inject Int? myNumber
-	
-	Void print() {
-		echo("My number is ${myNumber}")
+
+internal class OtherModule {
+	@Contribute { serviceType=FactoryDefaults# }
+	static Void contributeFactoryDefaults(Configuration config) {
+		config["my.config"] = "3rd party libraries set Factory defaults"
 	}
 }
 
 internal class AppModule {
-
-	static Void bind(ServiceBinder binder) {
-		binder.bind(Example#)
-	}
-
 	@Contribute { serviceType=ApplicationDefaults# }
 	static Void contributeApplicationDefaults(Configuration config) {
-		// applications override factory defaults
-		config["my.number"] = "69"
+		config["my.config"] = "Applications override Factory defaults"
 	}
 }
-
-internal class OtherModule {
-	
-	@Contribute { serviceType=FactoryDefaults# }
-	static Void contributeFactoryDefaults(Configuration config) {
-		// 3rd party libraries set factory defaults
-		config["my.number"] = "666"
-	}
-}
-
-// ---- Standard Support Classes ----
 
 internal class Main {
     Void main() {
         registry := RegistryBuilder().addModules([AppModule#, OtherModule#, IocConfigModule#]).build.startup
         
-		example  := (Example) registry.dependencyByType(Example#)
-        example.print()  // --> 69
+		example  := (Example) registry.autobuild(Example#)
+        echo(example.myConfig)  // --> Applications override Factory defaults
 		
 		registry.shutdown()
     }
