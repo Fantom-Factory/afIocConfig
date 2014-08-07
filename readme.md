@@ -2,7 +2,7 @@
 
 `IoC Config` is an [IoC](http://www.fantomfactory.org/pods/afIoc) library for providing injectable config values.
 
-Config values are essentially constants, but their value can be overridden on registry startup.
+Config values are essentially constants, but their value may be overridden on registry startup.
 
 This makes them great for use by 3rd party libraries. The libraries can set sensible default values, and applications may then optionally override them.
 
@@ -28,43 +28,31 @@ Full API & fandocs are available on the [Status302 repository](http://repo.statu
 using afIoc
 using afIocConfig
 
-class Example {
-    @Config { id="my.number" }
-    @Inject Int? myNumber
-
-    Void print() {
-        echo("My number is ${myNumber}")
-    }
+internal class Example {
+    @Config { id="my.config" }
+    @Inject Str? myConfig
 }
 
-class AppModule {
-    static Void bind(ServiceBinder binder) {
-        binder.bindImpl(Example#)
-    }
-
-    @Contribute { serviceType=ApplicationDefaults# }
-    static Void contributeApplicationDefaults(Configuration config) {
-        // applications override factory defaults
-        config["my.number"] = "69"
-    }
-}
-
-class OtherModule {
+internal class OtherModule {
     @Contribute { serviceType=FactoryDefaults# }
     static Void contributeFactoryDefaults(Configuration config) {
-        // 3rd party libraries set factory defaults
-        config["my.number"] = "666"
+        config["my.config"] = "3rd party libraries set Factory defaults"
     }
 }
 
-// ---- Standard Support Class ----
+internal class AppModule {
+    @Contribute { serviceType=ApplicationDefaults# }
+    static Void contributeApplicationDefaults(Configuration config) {
+        config["my.config"] = "Applications override Factory defaults"
+    }
+}
 
-class Main {
+internal class Main {
     Void main() {
         registry := RegistryBuilder().addModules([AppModule#, OtherModule#, IocConfigModule#]).build.startup
+        example  := (Example) registry.autobuild(Example#)
 
-        example  := (Example) registry.dependencyByType(Example#)
-        example.print()  // --> 69
+        echo(example.myConfig)  // --> Applications override Factory defaults
 
         registry.shutdown()
     }
@@ -75,15 +63,29 @@ class Main {
 
 ```
 C:\> fan Example.fan
-...
-IoC started up in 507ms
 
-My number is 69
+[afIoc] Adding module definition for afIocConfig::AppModule
+[afIoc] Adding module definition for afIocConfig::OtherModule
+[afIoc] Adding module definition for afIocConfig::IocConfigModule
+   ___    __                 _____        _
+  / _ |  / /_____  _____    / ___/__  ___/ /_________  __ __
+ / _  | / // / -_|/ _  /===/ __// _ \/ _/ __/ _  / __|/ // /
+/_/ |_|/_//_/\__|/_//_/   /_/   \_,_/__/\__/____/_/   \_, /
+                            Alien-Factory IoC v1.7.6 /___/
+
+IoC Registry built in 581ms and started up in 18ms
+
+Applications override Factory defaults
+
+[afIoc] IoC shutdown in 17ms
+[afIoc] "Goodbye!" from afIoc!
 ```
 
 ## Usage 
 
-All config values are referenced by a unique config `id` (a string). This id is used to set a factory default value, application values and to inject the value in to a service.
+### Define Config Values 
+
+All config values are referenced by a unique config `id` (a string). This `id` is used to set a factory default value, application values and to inject the value in to a service.
 
 Start by setting a default value by contributing to the [FactoryDefaults](http://repo.status302.com/doc/afIocConfig/FactoryDefaults.html) service in your `AppModule`:
 
@@ -101,6 +103,8 @@ Anyone may then easily override your value by contributing to the [ApplicationDe
         config["configId"] = "69"
     }
 
+### Inject Config Values 
+
 Config values may be injected into your service by using the `@Config` facet with the standard [IoC](http://www.fantomfactory.org/pods/afIoc) `@Inject` facet:
 
     class MyService {
@@ -112,17 +116,21 @@ Config values may be injected into your service by using the `@Config` facet wit
 
 Note that when config values are injected, they are [Type coerced](http://repo.status302.com/doc/afBeanUtils/TypeCoercer.html) to the field type. That means you can contribute `Str` or `Uri` values and inject it as a `File`.
 
-If an `id` is not supplied in `@Config` then it is inferred from the field name and containing pod. For example, if Type `MongoMgr` in pod `myMongo` looked like:
+If `@Config` does not supply an `id` then it is determined from the field name, class name and pod name. For example, if Type `MyService` was in a pod called `acme` and looked like:
 
-```
-class MongoMgr {
+    class MyService {
+        @Config
+        @Inject File configValue
+    
+        ...
+     }
 
-    @Config
-    @Inject Url mongoUrl
+Then the following IDs would be looked up (in order):
 
-    ...
-}
-```
+    <field>                --> configValue
+    <pod>.<field>          --> acme.configValue
+    <pod>.<class>.<field>  --> acme.MyService.configValue
+    <class>.<field>        --> MyService.configValue
 
-Then the id `myMongo.mongoUrl` would be looked up. Failing that, a fallback to just `mongoUrl` would be attempted.
+Note that config IDs are case insensitive.
 
