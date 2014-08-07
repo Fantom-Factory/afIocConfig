@@ -1,4 +1,8 @@
-using afIoc
+using afIoc::Inject
+using afIoc::SubModule
+using afIoc::Contribute
+using afIoc::Configuration
+using afIoc::RegistryBuilder
 
 internal class TestIdDefaults : ConfigTest {
 

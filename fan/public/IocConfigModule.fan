@@ -9,7 +9,7 @@ const class IocConfigModule {
 	internal static Void bind(ServiceBinder binder) {
 		binder.bind(FactoryDefaults#)		.withoutProxy	// we gain nuffin by making these proxies
 		binder.bind(ApplicationDefaults#)	.withoutProxy	// we gain nuffin by making these proxies
-		binder.bind(ConfigSource#)
+		binder.bind(IocConfigSource#, ConfigSourceImpl#).withId(ConfigSource#.qname)
 		binder.bind(ConfigProvider#)
 	}
 
