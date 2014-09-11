@@ -9,13 +9,13 @@ class Build : BuildPod {
 
 		meta = [
 			"proj.name"		: "IoC Config",
-			"afIoc.module"	: "afIocConfig::IocConfigModule",
+			"afIoc.module"	: "afIocConfig::ConfigModule",
 			"tags"			: "system",
 			"repo.private"	: "true"
 		]
 
 		index = [	
-			"afIoc.module"	: "afIocConfig::IocConfigModule"
+			"afIoc.module"	: "afIocConfig::ConfigModule"
 		]
 
 		depends = [
