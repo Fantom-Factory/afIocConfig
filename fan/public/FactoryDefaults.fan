@@ -14,7 +14,7 @@
 ** 
 ** Config values can be any immutable value.
 ** 
-** @uses a MappedConfig of 'Str:Obj' of IDs to Objs. Obj values must be immutable.
+** @uses Configuration of 'Str:Obj' of IDs to Objs. Obj values must be immutable.
 const mixin FactoryDefaults {
 	@NoDoc
 	abstract Str:Obj? config()

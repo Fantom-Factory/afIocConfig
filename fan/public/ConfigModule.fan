@@ -4,13 +4,13 @@ using afIoc
 ** 
 ** This class is public so it may be referenced explicitly in test code.
 @NoDoc
-const class IocConfigModule {
+const class ConfigModule {
 	
-	internal static Void bind(ServiceBinder binder) {
-		binder.bind(FactoryDefaults#)		.withoutProxy	// we gain nuffin by making these proxies
-		binder.bind(ApplicationDefaults#)	.withoutProxy	// we gain nuffin by making these proxies
-		binder.bind(IocConfigSource#, ConfigSourceImpl#).withId(ConfigSource#.qname)
-		binder.bind(ConfigProvider#)
+	internal static Void defineServices(ServiceDefinitions defs) {
+		defs.add(FactoryDefaults#)
+		defs.add(ApplicationDefaults#)
+		defs.add(ConfigSource#)
+		defs.add(ConfigProvider#)
 	}
 
 	@Contribute { serviceType=DependencyProviders# }

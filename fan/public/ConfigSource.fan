@@ -2,9 +2,6 @@ using afIoc::Inject
 using afBeanUtils::TypeCoercer
 using afBeanUtils::NotFoundErr
 
-@NoDoc @Deprecated { msg="Use 'ConfigSource' instead" } 
-const mixin IocConfigSource : ConfigSource { }
-
 ** (Service) - Provides the config values. 
 const mixin ConfigSource {
 	
@@ -12,13 +9,13 @@ const mixin ConfigSource {
 	** 
 	** Throws 'ArgErr' if the ID could not be found.
 	@Operator
-	abstract Obj? get(Str id, Type? coerceTo := null)
+	abstract Obj? get(Str id, Type? coerceTo := null, Bool checked := true)
 	
 	** Returns a case-insensitive map of all the config values
 	abstract Str:Obj? config()
 }
 
-internal const class ConfigSourceImpl : IocConfigSource {
+internal const class ConfigSourceImpl : ConfigSource {
 	private const TypeCoercer typeCoercer := CachingTypeCoercer()
 
 			override const Str:Obj? config
@@ -33,9 +30,9 @@ internal const class ConfigSourceImpl : IocConfigSource {
 		this.config = config.toImmutable
 	}
 	
-	override Obj? get(Str id, Type? coerceTo := null) {
+	override Obj? get(Str id, Type? coerceTo := null, Bool checked := true) {
 		if (!config.containsKey(id))
-			throw ConfigNotFoundErr(ErrMsgs.configNotFound(id), config.keys)
+			return checked ? throw ConfigNotFoundErr(ErrMsgs.configNotFound(id), config.keys) : null 
 		value := config[id]
 		if (value == null) 
 			return null 

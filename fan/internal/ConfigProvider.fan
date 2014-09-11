@@ -5,8 +5,7 @@ using afIoc::Registry
 
 internal const class ConfigProvider : DependencyProvider {
 	
-	@Inject
-	private const Registry 	registry
+	@Inject	private const Registry 	registry
 	
 	new make(|This|in) { in(this) }
 
@@ -20,20 +19,31 @@ internal const class ConfigProvider : DependencyProvider {
 		id 		:= config.id
 		
 		if (id != null)
-			return conSrc.get(id, ctx.dependencyType)
+			return conSrc.get(id, ctx.dependencyType, !config.optional)
 		
 		pod		:= ctx.field.parent.pod.name.decapitalize
 		clazz	:= ctx.field.parent.name.decapitalize
 		field	:= ctx.field.name.decapitalize
 		
 		qnames	:= "${field} ${pod}.${field} ${pod}.${clazz}.${field} ${clazz}.${field}".split
-		name	:= qnames.find { conSrc.config.containsKey(it) } ?: throw ConfigNotFoundErr(ErrMsgs.couldNotDetermineId(ctx.field, qnames), conSrc.config.keys)
+		name	:= qnames.find { conSrc.config.containsKey(it) }
+		
+		if (name == null)
+			name = conSrc.config.keys.find { this.fromDisplayName(it).equalsIgnoreCase(field) }
+
+		if (name == null)
+			return config.optional ? null : throw ConfigNotFoundErr(ErrMsgs.couldNotDetermineId(ctx.field, qnames), conSrc.config.keys)
+
 		value 	:= conSrc.get(name, ctx.dependencyType)
 		return value
 	}
 	
-	** lazily load configSource - it got no proxy 'cos of default values in mixin
+	private Str fromDisplayName(Str name) {
+		Str.fromChars(name.chars.findAll { it.isAlphaNum })
+	}
+	
+	** lazily load configSource - can't be arsed proxy'ing it!
 	private ConfigSource configSource() {
-		registry.dependencyByType(ConfigSource#)
+		registry.serviceById(ConfigSource#.qname)
 	}
 }

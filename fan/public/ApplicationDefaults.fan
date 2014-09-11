@@ -12,7 +12,7 @@
 ** 
 ** Config values can be any immutable value.
 ** 
-** @uses a Configuration of 'Str:Obj' of IDs to Objs. Obj values must be immutable.
+** @uses Configuration of 'Str:Obj' of IDs to Objs. Obj values must be immutable.
 const mixin ApplicationDefaults { 
 	@NoDoc
 	abstract Str:Obj? config()

@@ -44,6 +44,13 @@ internal class TestConfig : ConfigTest {
 			s02	:= (T_MyService02) reg.serviceById("s02")			
 		}
 	}
+
+	Void testOptionalConfigNotExist() {
+		reg := RegistryBuilder().addModule(T_MyModule01#).build.startup
+		s07	:= (T_MyService07) reg.serviceById("s07")			
+		verifyNull(s07.c04)
+		verifyNull(s07.cNoId)
+	}
 	
 	Void testCoerceValue() {
 		reg := RegistryBuilder().addModule(T_MyModule01#).build.startup
@@ -52,11 +59,12 @@ internal class TestConfig : ConfigTest {
 	}
 }
 
-@SubModule { modules=[IocConfigModule#] }
+@SubModule { modules=[ConfigModule#] }
 internal class T_MyModule01 {
-	static Void bind(ServiceBinder binder) {
-		binder.bind(T_MyService01#).withId("s01")
-		binder.bind(T_MyService02#).withId("s02")
+	static Void defineServices(ServiceDefinitions defs) {
+		defs.add(T_MyService01#).withId("s01")
+		defs.add(T_MyService02#).withId("s02")
+		defs.add(T_MyService07#).withId("s07")
 	}	
 
 	@Contribute { serviceType=FactoryDefaults# }
@@ -85,18 +93,24 @@ internal class T_MyModule01 {
 }
 
 internal class T_MyService01 {
-	@Inject @Config{ id="c01" }	Str? c01
-	@Inject @Config{ id="c02" }	Str? c02
-	@Inject @Config{ id="c03" }	Str? c03
+	@Config { id="c01" } Str? c01
+	@Config { id="c02" } Str? c02
+	@Config { id="c03" } Str? c03
 	
-	@Inject @Config{ id="c05" }	Str? c05
-	@Inject @Config{ id="c06" }	Str? c06
-	@Inject @Config{ id="c07" }	Str? c07
+	@Config { id="c05" } Str? c05
+	@Config { id="c06" } Str? c06
+	@Config { id="c07" } Str? c07
 
-	@Inject @Config{ id="c08" }	Int? c08	// coerce fromStr	
+	@Config { id="c08" } Int? c08	// coerce fromStr
 }
 
 internal class T_MyService02 {
 	// c04 doesn't exist
-	@Inject @Config{ id="c04" }	Str? c04
+	@Config { id="c04" } Str? c04
+}
+
+internal class T_MyService07 {
+	// c04 doesn't exist
+	@Config { optional=true; id="c04" }	Str? c04
+	@Config { optional=true }			Str? cNoId
 }
