@@ -97,8 +97,12 @@ internal class T_MyService01 {
 	@Config { id="c02" } Str? c02
 	@Config { id="c03" } Str? c03
 	
+	// throw some dodgy @Injects into the mix
+	@Inject
 	@Config { id="c05" } Str? c05
+	@Inject
 	@Config { id="c06" } Str? c06
+	@Inject
 	@Config { id="c07" } Str? c07
 
 	@Config { id="c08" } Int? c08	// coerce fromStr
