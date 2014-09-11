@@ -21,10 +21,10 @@ internal class TestConfigSource : ConfigTest {
 	
 }
 
-@SubModule { modules=[IocConfigModule#] }
+@SubModule { modules=[ConfigModule#] }
 internal class T_MyModule03 {
-	static Void bind(ServiceBinder binder) {
-		binder.bind(T_MyService04#).withId("s04")
+	static Void defineServices(ServiceDefinitions defs) {
+		defs.add(T_MyService04#).withId("s04")
 	}	
 
 	@Contribute { serviceType=ApplicationDefaults# }
@@ -34,5 +34,5 @@ internal class T_MyModule03 {
 }
 
 internal class T_MyService04 {
-	@Inject @Config{ id="c02" }	Str? c01
+	@Config{ id="c02" }	Str? c01
 }

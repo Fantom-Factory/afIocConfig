@@ -13,6 +13,7 @@ internal class TestIdDefaults : ConfigTest {
 		verifyEq(s03.c02, "Got")
 		verifyEq(s03.c03, "Any")
 		verifyEq(s03.c04, "Grapes?")
+		verifyEq(s03.c05GotDots, "...")
 	}
 
 	Void testDefaultIdNotFound() {
@@ -34,7 +35,7 @@ internal class TestIdDefaults : ConfigTest {
 	}
 }
 
-@SubModule { modules=[IocConfigModule#] }
+@SubModule { modules=[ConfigModule#] }
 internal class T_MyModule02 {
 	@Contribute { serviceType=FactoryDefaults# }
 	static Void facDefs(Configuration config) {
@@ -42,22 +43,23 @@ internal class T_MyModule02 {
 		config["afIocConfig.c02"]				= "Got"
 		config["afIocConfig.T_MyService03.c03"]	= "Any"
 		config["T_MyService03.c04"]				= "Grapes?"
+		config["c05.got.dots"] 					= "..."
 	}
 }
 
 internal class T_MyService03 {
-	@Inject @Config	Str? c01
-	@Inject @Config	Str? c02
-	@Inject @Config	Str? c03
-	@Inject @Config	Str? c04
+	@Config	Str? c01
+	@Config	Str? c02
+	@Config	Str? c03
+	@Config	Str? c04
+	@Config	Str? c05GotDots
 }
 
 internal class T_MyService05 {
-	@Inject @Config	Str? c05
+	@Config	Str? c05
 }
 
 internal class T_MyService06 {
-	@Inject @Config	Str? C01
-	@Inject @Config	Str? C02
+	@Config	Str? C01
+	@Config	Str? C02
 }
-
