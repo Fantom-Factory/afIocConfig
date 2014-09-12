@@ -30,7 +30,7 @@ using afIocConfig
 
 internal class Example {
     @Config { id="my.config" }
-    @Inject Str? myConfig
+    Str? myConfig
 }
 
 internal class OtherModule {
@@ -49,10 +49,10 @@ internal class AppModule {
 
 internal class Main {
     Void main() {
-        registry := RegistryBuilder().addModules([AppModule#, OtherModule#, IocConfigModule#]).build.startup
+        registry := RegistryBuilder().addModules([ConfigModule#, AppModule#, OtherModule#]).build.startup
         example  := (Example) registry.autobuild(Example#)
 
-        echo(example.myConfig)  // --> Applications override Factory defaults
+        echo("--> ${example.myConfig}")  // --> Applications override Factory defaults
 
         registry.shutdown()
     }
@@ -71,11 +71,11 @@ C:\> fan Example.fan
   / _ |  / /_____  _____    / ___/__  ___/ /_________  __ __
  / _  | / // / -_|/ _  /===/ __// _ \/ _/ __/ _  / __|/ // /
 /_/ |_|/_//_/\__|/_//_/   /_/   \_,_/__/\__/____/_/   \_, /
-                            Alien-Factory IoC v1.7.6 /___/
+                            Alien-Factory IoC v2.0.0 /___/
 
-IoC Registry built in 581ms and started up in 18ms
+IoC Registry built in 281ms and started up in 18ms
 
-Applications override Factory defaults
+--> Applications override Factory defaults
 
 [afIoc] IoC shutdown in 17ms
 [afIoc] "Goodbye!" from afIoc!
@@ -105,22 +105,22 @@ Anyone may then easily override your value by contributing to the [ApplicationDe
 
 ### Inject Config Values 
 
-Config values may be injected into your service by using the `@Config` facet with the standard [IoC](http://www.fantomfactory.org/pods/afIoc) `@Inject` facet:
+Use the `@Config` facet to inject config values into your service.
 
     class MyService {
         @Config { id="configId" }
-        @Inject File configValue
+        File configValue
     
         ...
      }
 
-Note that when config values are injected, they are [Type coerced](http://repo.status302.com/doc/afBeanUtils/TypeCoercer.html) to the field type. That means you can contribute `Str` or `Uri` values and inject it as a `File`.
+Note that when config values are injected, they are [Type coerced](http://repo.status302.com/doc/afBeanUtils/TypeCoercer.html) to the field type. That means you can contribute `Str` or `Uri` values and inject them as a `File`.
 
 If `@Config` does not supply an `id` then it is determined from the field name, class name and pod name. For example, if Type `MyService` was in a pod called `acme` and looked like:
 
     class MyService {
         @Config
-        @Inject File configValue
+        File configValue
     
         ...
      }
@@ -132,5 +132,9 @@ Then the following IDs would be looked up (in order):
     <pod>.<class>.<field>  --> acme.MyService.configValue
     <class>.<field>        --> MyService.configValue
 
-Note that config IDs are case insensitive.
+(Note that config IDs are case insensitive.)
+
+If the config value is still not found then, as a last resort, the field name is checked against the config IDs after they have been stripped of any non-alphaNum characters. That means you can inject config values with IDs similar to `afIocEnv.isDev` with:
+
+    @Config Bool afIocEnvIsDev
 
