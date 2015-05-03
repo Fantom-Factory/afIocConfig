@@ -1,4 +1,5 @@
 using afIoc::Inject
+using afIoc::IocErr
 using afIoc::SubModule
 using afIoc::Contribute
 using afIoc::Configuration
@@ -18,7 +19,7 @@ internal class TestIdDefaults : ConfigTest {
 
 	Void testDefaultIdNotFound() {
 		reg := RegistryBuilder().addModule(T_MyModule02#).build.startup
-		verifyErrMsg(ConfigNotFoundErr#, ErrMsgs.couldNotDetermineId(T_MyService05#c05, "c05 afIocConfig.c05 afIocConfig.t_MyService05.c05 t_MyService05.c05".split)) {
+		verifyErrMsg(IocErr#, ErrMsgs.couldNotDetermineId(T_MyService05#c05, "c05 afIocConfig.c05 afIocConfig.t_MyService05.c05 t_MyService05.c05".split)) {
 			reg.autobuild(T_MyService05#)
 		}
 	}
