@@ -14,6 +14,6 @@ const class ConfigModule {
 
 	@Contribute { serviceType=DependencyProviders# }
 	internal static Void contributeDependencyProviders(Configuration config) {
-		config.set("afIocConfig.configProvider", config.autobuild(ConfigProvider#)).before("afIoc.serviceProvider")
+		config["afIocConfig.configProvider"] = config.autobuild(ConfigProvider#)
 	}
 }
