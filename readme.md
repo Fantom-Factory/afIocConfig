@@ -1,4 +1,10 @@
-## Overview 
+#IoC Config v1.0.16
+---
+[![Written in: Fantom](http://img.shields.io/badge/written%20in-Fantom-lightgray.svg)](http://fantom.org/)
+[![pod: v1.0.16](http://img.shields.io/badge/pod-v1.0.16-yellow.svg)](http://www.fantomfactory.org/pods/afIocConfig)
+![Licence: MIT](http://img.shields.io/badge/licence-MIT-blue.svg)
+
+## Overview
 
 `IoC Config` is an [IoC](http://www.fantomfactory.org/pods/afIoc) library for providing injectable config values.
 
@@ -6,7 +12,7 @@ Config values are essentially constants, but their value may be overridden on re
 
 This makes them great for use by 3rd party libraries. The libraries can set sensible default values, and applications may then optionally override them.
 
-## Install 
+## Install
 
 Install `IoC Config` with the Fantom Repository Manager ( [fanr](http://fantom.org/doc/docFanr/Tool.html#install) ):
 
@@ -16,11 +22,11 @@ To use in a [Fantom](http://fantom.org/) project, add a dependency to `build.fan
 
     depends = ["sys 1.0", ..., "afIocConfig 1.0+"]
 
-## Documentation 
+## Documentation
 
 Full API & fandocs are available on the [Status302 repository](http://repo.status302.com/doc/afIocConfig/#overview).
 
-## Quick Start 
+## Quick Start
 
 1). Create a text file called `Example.fan`:
 
@@ -81,9 +87,9 @@ IoC Registry built in 281ms and started up in 18ms
 [afIoc] "Goodbye!" from afIoc!
 ```
 
-## Usage 
+## Usage
 
-### Define Config Values 
+### Define Config Values
 
 All config values are referenced by a unique config `id` (a string). This `id` is used to set a factory default value, application values and to inject the value in to a service.
 
@@ -103,7 +109,7 @@ Anyone may then easily override your value by contributing to the [ApplicationDe
         config["configId"] = "69"
     }
 
-### Inject Config Values 
+### Inject Config Values
 
 Use the `@Config` facet to inject config values into your service.
 
