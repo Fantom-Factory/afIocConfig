@@ -5,13 +5,13 @@ class Build : BuildPod {
 	new make() {
 		podName = "afIocConfig"
 		summary = "An IoC library for providing injectable config values"
-		version = Version("1.0.17")
+		version = Version("1.0.16")
 
 		meta = [
 			"proj.name"		: "IoC Config",
 			"afIoc.module"	: "afIocConfig::ConfigModule",
-			"tags"			: "system",
-			"repo.private"	: "true"
+			"repo.tags"		: "system",
+			"repo.public"	: "true"
 		]
 
 		index = [	
@@ -27,6 +27,6 @@ class Build : BuildPod {
 		]
 
 		srcDirs = [`test/unit-tests/`, `fan/`, `fan/public/`, `fan/internal/`]
-		resDirs = [,]
+		resDirs = [`doc/`]
 	}
 }

@@ -1,0 +1,56 @@
+Versions
+********
+
+v1.0.16
+=======
+ - New: Added even more default ID options; the alphaNum search.
+ - New: '@Config.optional' and 'ConfigSource.get(..., Bool checked)' param for config values that might not exist.
+ - Chg: Updated to [IoC 2.0.0]`pod:afIoc`.
+ - Chg: '@Config' is standalone, it no longer needs to be paired with '@Inject'.
+ - Chg: Renamed 'IocConfigModule' --> 'ConfigModule'.
+
+v1.0.14
+=======
+ - New: Added more default ID options.
+ - Chg: Updated to [IoC 1.7.6]`pod:afIoc`.
+ - Chg: Renamed 'IocConfigSource' --> 'ConfigSource'.
+ - Chg: Removed ability to contribute your '@Config' facets. (An unused feature.)
+
+v1.0.12
+=======
+ - Bug: Bodged release - updated to [IoC 1.7.2]`pod:afIoc`.
+
+v1.0.10
+=======
+ - Chg: Updated to [IoC 1.7.0]`pod:afIoc`.
+
+v1.0.8
+======
+ - Chg: Updated to [IoC 1.6.4]`pod:afIoc` and removed dependencies on deprecated classes / methods.
+
+v1.0.6
+======
+ - New: Unknown config ids are inferred from the field and pod name.
+ - Chg: Updated to [IoC 1.6.0]`pod:afIoc`.
+ - Chg: Replaced 'ConcurrentState' usage with new 'const TypeCoercer'.
+
+v1.0.4
+======
+ - Chg: Exposed the underlying config map in 'IocConfigSource'.
+
+v1.0.2
+======
+ - Chg: Updated to [IoC 1.5.2]`pod:afIoc`.
+ - Bug: 'IocConfigSource.get()' threw an Err if 'coerceTo' type was 'null'.
+
+v1.0.0
+======
+ - New: '@Config' has a default 'id' of the field name it is being injected into.
+ - New: 'ConfigProvider' can be configured with bespoke 'Config' facets. (As used by BedSheet.)
+ - Chg: Removed 'ConfigSource.getCoerced()' in favour of a default value in 'ConfigSource.get()'.
+ - Chg: Upgraded to [IoC 1.5.0]`pod:afIoc`.
+
+v0.0.2
+======
+ - New: Preview Release
+

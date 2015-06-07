@@ -2,6 +2,8 @@
 ** (Service) - Contribute to set application default '@Config' values, overriding any factory defaults. 
 **
 ** pre>
+** syntax: fantom
+** 
 ** class AppModule {
 ** 
 **   @Contribute { serviceType=ApplicationDefaults# }
