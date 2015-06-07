@@ -1,15 +1,17 @@
 
 ** (Service) - Contribute to set factory default '@Config' values. Only 3rd Party libraries, such as 
-** [BedSheet]`http://www.fantomfactory.org/pods/afBedSheet` need to set / contribute factory defaults. Applications 
+** [BedSheet]`pod:afBedSheet` need to set / contribute factory defaults. Applications 
 ** should override factory defaults by contributing to `ApplicationDefaults`. 
 ** 
 ** pre>
+** syntax: fantom
+** 
 ** class AppModule {
 ** 
-**   @Contribute { serviceType=FactoryDefaults# }
-**   static Void contributeFactoryDefaults(Configuration config) {
-**     config["config.id"] = "Config Value"
-**   }
+**     @Contribute { serviceType=FactoryDefaults# }
+**     static Void contributeFactoryDefaults(Configuration config) {
+**         config["config.id"] = "Config Value"
+**     }
 ** <pre
 ** 
 ** Config values can be any immutable value.

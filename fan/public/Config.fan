@@ -1,10 +1,14 @@
 
 ** Use to inject config values into your classes. Example:
 ** 
+**   syntax: fantom
+** 
 **   @Config { id="gzipThreshold" }
 **   private Int gzipThreshold
 ** 
 ** If 'id' is not provided, it takes on the name of the field. Therefore the following is identical to the above:
+** 
+**   syntax: fantom
 ** 
 **   @Config
 **   private Int gzipThreshold
