@@ -1,25 +1,22 @@
-using afIoc::DependencyProvider
-using afIoc::Inject
-using afIoc::InjectionCtx
-using afIoc::Registry
+using afIoc3
 
 internal const class ConfigProvider : DependencyProvider {
 	
-	@Inject	private const Registry 	registry
+	@Inject	private const |->ConfigSource| 	configSource
 	
 	new make(|This|in) { in(this) }
 
-	override Bool canProvide(InjectionCtx ctx) {
-		ctx.field != null && ctx.field.hasFacet(Config#)
+	override Bool canProvide(Scope scope, InjectionCtx ctx) {
+		ctx.isFieldInjection && ctx.field.hasFacet(Config#)
 	}
 
-	override Obj? provide(InjectionCtx ctx) {
-		conSrc	:= configSource
+	override Obj? provide(Scope scope, InjectionCtx ctx) {
+		conSrc	:= (ConfigSource) configSource()
 		config	:= (Config) Field#.method("facet").callOn(ctx.field, [Config#])	// Stoopid F4
 		id 		:= config.id
 		
 		if (id != null)
-			return conSrc.get(id, ctx.dependencyType, !config.optional)
+			return conSrc.get(id, ctx.field.type, !config.optional)
 		
 		pod		:= ctx.field.parent.pod.name.decapitalize
 		clazz	:= ctx.field.parent.name.decapitalize
@@ -34,16 +31,11 @@ internal const class ConfigProvider : DependencyProvider {
 		if (name == null)
 			return config.optional ? null : throw ConfigNotFoundErr(ErrMsgs.couldNotDetermineId(ctx.field, qnames), conSrc.config.keys)
 
-		value 	:= conSrc.get(name, ctx.dependencyType)
+		value 	:= conSrc.get(name, ctx.field.type)
 		return value
 	}
 	
 	private Str fromDisplayName(Str name) {
 		Str.fromChars(name.chars.findAll { it.isAlphaNum })
-	}
-	
-	** lazily load configSource - can't be arsed proxy'ing it!
-	private ConfigSource configSource() {
-		registry.serviceById(ConfigSource#.qname)
 	}
 }

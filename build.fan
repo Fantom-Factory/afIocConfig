@@ -23,7 +23,7 @@ class Build : BuildPod {
 			
 			"afBeanUtils  1.0.2 - 1.0",
 			"afConcurrent 1.0.6 - 1.0",
-			"afIoc        2.0.8 - 2.0"
+			"afIoc3       3.0.0 - 3.0"
 		]
 
 		srcDirs = [`test/unit-tests/`, `fan/`, `fan/public/`, `fan/internal/`]
