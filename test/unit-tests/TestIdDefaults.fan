@@ -1,15 +1,10 @@
-using afIoc::Inject
-using afIoc::IocErr
-using afIoc::SubModule
-using afIoc::Contribute
-using afIoc::Configuration
-using afIoc::RegistryBuilder
+using afIoc3
 
 internal class TestIdDefaults : ConfigTest {
 
 	Void testDefaultIds() {
-		reg := RegistryBuilder().addModule(T_MyModule02#).build.startup
-		s03	:= (T_MyService03) reg.autobuild(T_MyService03#)
+		reg := RegistryBuilder().addModule(T_MyModule02#).build
+		s03	:= (T_MyService03) reg.rootScope.build(T_MyService03#)
 		verifyEq(s03.c01, "You")
 		verifyEq(s03.c02, "Got")
 		verifyEq(s03.c03, "Any")
@@ -18,26 +13,26 @@ internal class TestIdDefaults : ConfigTest {
 	}
 
 	Void testDefaultIdNotFound() {
-		reg := RegistryBuilder().addModule(T_MyModule02#).build.startup
+		reg := RegistryBuilder().addModule(T_MyModule02#).build
 		verifyErrMsg(IocErr#, ErrMsgs.couldNotDetermineId(T_MyService05#c05, "c05 afIocConfig.c05 afIocConfig.t_MyService05.c05 t_MyService05.c05".split)) {
-			reg.autobuild(T_MyService05#)
+			reg.rootScope.build(T_MyService05#)
 		}
 	}
 
 	Void testCaseInsensitive() {
-		reg := RegistryBuilder().addModule(T_MyModule02#).build.startup
-		s06	:= (T_MyService06) reg.autobuild(T_MyService06#)
+		reg := RegistryBuilder().addModule(T_MyModule02#).build
+		s06	:= (T_MyService06) reg.rootScope.build(T_MyService06#)
 		verifyEq(s06.C01, "You")
 		verifyEq(s06.C02, "Got")
 		
-		conSrc	:= (ConfigSource) reg.autobuild(ConfigSource#)
+		conSrc	:= (ConfigSource) reg.rootScope.build(ConfigSource#)
 		verifyEq(conSrc.config["AFIOCCONFIG.C02"], "Got")
 		verifyEq(conSrc["AFIOCCONFIG.C02"], "Got")
 	}
 }
 
 @SubModule { modules=[ConfigModule#] }
-internal class T_MyModule02 {
+internal const class T_MyModule02 {
 	@Contribute { serviceType=FactoryDefaults# }
 	static Void facDefs(Configuration config) {
 		config["c01"]							= "You"

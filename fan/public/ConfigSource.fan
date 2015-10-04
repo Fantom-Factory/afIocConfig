@@ -1,4 +1,4 @@
-using afIoc::Inject
+using afIoc3::Inject
 using afBeanUtils::TypeCoercer
 using afBeanUtils::NotFoundErr
 

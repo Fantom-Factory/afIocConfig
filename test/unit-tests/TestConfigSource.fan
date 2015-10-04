@@ -1,10 +1,10 @@
-using afIoc
+using afIoc3
 
 internal class TestConfigSource : ConfigTest {
 	
 	Void testCanOverrideNonExistantConfig() {
-		reg := RegistryBuilder().addModule(T_MyModule03#).build.startup
-		s04	:= (T_MyService04) reg.serviceById("s04")
+		reg := RegistryBuilder().addModule(T_MyModule03#).build
+		s04	:= (T_MyService04) reg.rootScope.serviceById("s04")
 		
 		// we DO NOT want to throw an err if config is ONLY defined in AppDefaults, 'cos most web 
 		// apps (mine included!) will define their OWN config - it's not just about overiding! 
@@ -12,8 +12,8 @@ internal class TestConfigSource : ConfigTest {
 	}
 
 	Void testBasics_BufFix() {
-		reg := RegistryBuilder().addModule(T_MyModule03#).build.startup
-		src	:= (ConfigSource) reg.dependencyByType(ConfigSource#)
+		reg := RegistryBuilder().addModule(T_MyModule03#).build
+		src	:= (ConfigSource) reg.rootScope.serviceByType(ConfigSource#)
 
 		// can't believe I never tested this! get() without a type threw an NPE!
 		verifyEq(src.get("c02"), "Belgium")
@@ -22,9 +22,9 @@ internal class TestConfigSource : ConfigTest {
 }
 
 @SubModule { modules=[ConfigModule#] }
-internal class T_MyModule03 {
-	static Void defineServices(ServiceDefinitions defs) {
-		defs.add(T_MyService04#).withId("s04")
+internal const class T_MyModule03 {
+	static Void defineServices(RegistryBuilder defs) {
+		defs.addService(T_MyService04#).withId("s04")
 	}	
 
 	@Contribute { serviceType=ApplicationDefaults# }
@@ -33,6 +33,6 @@ internal class T_MyModule03 {
 	}
 }
 
-internal class T_MyService04 {
-	@Config{ id="c02" }	Str? c01
+internal const class T_MyService04 {
+	@Config{ id="c02" }	const Str? c01
 }
