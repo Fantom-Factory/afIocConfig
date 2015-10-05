@@ -1,30 +1,29 @@
 using afIoc
 using afIocConfig
 
-internal class Example {
+class Example {
 	@Config { id="my.config" } Str? myConfig	
 }
 
-
-internal class OtherModule {
+const class OtherModule {
 	@Contribute { serviceType=FactoryDefaults# }
-	static Void contributeFactoryDefaults(Configuration config) {
+	Void contributeFactoryDefaults(Configuration config) {
 		config["my.config"] = "3rd party libraries set Factory defaults"
 	}
 }
 
-internal class AppModule {
+const class AppModule {
 	@Contribute { serviceType=ApplicationDefaults# }
-	static Void contributeApplicationDefaults(Configuration config) {
+	Void contributeApplicationDefaults(Configuration config) {
 		config["my.config"] = "Applications override Factory defaults"
 	}
 }
 
-internal class Main {
+class Main {
     Void main() {
-        registry := RegistryBuilder().addModules([ConfigModule#, AppModule#, OtherModule#]).build.startup
+        registry := RegistryBuilder().addModules([IocConfigModule#, AppModule#, OtherModule#]).build()
         
-		example  := (Example) registry.autobuild(Example#)
+		example  := (Example) registry.rootScope.build(Example#)
         echo("--> ${example.myConfig}")  // --> Applications override Factory defaults
 		
 		registry.shutdown()

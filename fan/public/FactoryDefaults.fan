@@ -6,10 +6,10 @@
 ** pre>
 ** syntax: fantom
 ** 
-** class AppModule {
+** const class AppModule {
 ** 
 **     @Contribute { serviceType=FactoryDefaults# }
-**     static Void contributeFactoryDefaults(Configuration config) {
+**     Void contributeFactoryDefaults(Configuration config) {
 **         config["config.id"] = "Config Value"
 **     }
 ** <pre

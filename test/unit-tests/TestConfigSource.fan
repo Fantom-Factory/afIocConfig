@@ -1,4 +1,4 @@
-using afIoc3
+using afIoc
 
 internal class TestConfigSource : ConfigTest {
 	
@@ -21,7 +21,7 @@ internal class TestConfigSource : ConfigTest {
 	
 }
 
-@SubModule { modules=[ConfigModule#] }
+@SubModule { modules=[IocConfigModule#] }
 internal const class T_MyModule03 {
 	static Void defineServices(RegistryBuilder defs) {
 		defs.addService(T_MyService04#).withId("s04")
