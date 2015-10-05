@@ -5,7 +5,7 @@ class Build : BuildPod {
 	new make() {
 		podName = "afIocConfig"
 		summary = "An IoC library for providing injectable config values"
-		version = Version("1.0.17")
+		version = Version("1.1.0")
 
 		meta = [
 			"proj.name"		: "IoC Config",
@@ -21,9 +21,9 @@ class Build : BuildPod {
 		depends = [
 			"sys 1.0", 
 			
-			"afBeanUtils  1.0.2 - 1.0",
-			"afConcurrent 1.0.6 - 1.0",
-			"afIoc3       3.0.0 - 3.0"
+			"afBeanUtils  1.0.6  - 1.0",
+			"afConcurrent 1.0.10 - 1.0",
+			"afIoc        3.0.0  - 3.0"
 		]
 
 		srcDirs = [`test/unit-tests/`, `fan/`, `fan/public/`, `fan/internal/`]

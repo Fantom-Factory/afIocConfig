@@ -1,4 +1,4 @@
-using afIoc3
+using afIoc
 
 internal class TestIdDefaults : ConfigTest {
 
@@ -31,7 +31,7 @@ internal class TestIdDefaults : ConfigTest {
 	}
 }
 
-@SubModule { modules=[ConfigModule#] }
+@SubModule { modules=[IocConfigModule#] }
 internal const class T_MyModule02 {
 	@Contribute { serviceType=FactoryDefaults# }
 	static Void facDefs(Configuration config) {
