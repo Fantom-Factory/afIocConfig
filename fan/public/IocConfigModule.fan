@@ -7,9 +7,9 @@ using afIoc
 const class IocConfigModule {
 	
 	internal static Void defineServices(RegistryBuilder defs) {
-		defs.addService(FactoryDefaults#).withRootScope
-		defs.addService(ApplicationDefaults#).withRootScope
-		defs.addService(ConfigSource#).withRootScope
+		defs.addService(FactoryDefaults#)		.withRootScope
+		defs.addService(ApplicationDefaults#)	.withRootScope
+		defs.addService(ConfigSource#)			.withRootScope
 	}
 
 	@Contribute { serviceType=DependencyProviders# }
