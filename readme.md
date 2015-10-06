@@ -1,7 +1,7 @@
-#IoC Config v1.0.16
+#IoC Config v1.1.0
 ---
 [![Written in: Fantom](http://img.shields.io/badge/written%20in-Fantom-lightgray.svg)](http://fantom.org/)
-[![pod: v1.0.16](http://img.shields.io/badge/pod-v1.0.16-yellow.svg)](http://www.fantomfactory.org/pods/afIocConfig)
+[![pod: v1.1.0](http://img.shields.io/badge/pod-v1.1.0-yellow.svg)](http://www.fantomfactory.org/pods/afIocConfig)
 ![Licence: MIT](http://img.shields.io/badge/licence-MIT-blue.svg)
 
 ## Overview
@@ -16,11 +16,11 @@ This makes them great for use by 3rd party libraries. The libraries can set sens
 
 Install `IoC Config` with the Fantom Repository Manager ( [fanr](http://fantom.org/doc/docFanr/Tool.html#install) ):
 
-    C:\> fanr install -r http://repo.status302.com/fanr/ afIocConfig
+    C:\> fanr install -r http://pods.fantomfactory.org/fanr/ afIocConfig
 
 To use in a [Fantom](http://fantom.org/) project, add a dependency to `build.fan`:
 
-    depends = ["sys 1.0", ..., "afIocConfig 1.0"]
+    depends = ["sys 1.0", ..., "afIocConfig 1.1"]
 
 ## Documentation
 
@@ -33,29 +33,34 @@ Full API & fandocs are available on the [Fantom Pod Repository](http://pods.fant
         using afIoc
         using afIocConfig
         
-        internal class Example {
+        class Example {
             @Config { id="my.config" }
             Str? myConfig
         }
         
-        internal class OtherModule {
+        const class OtherModule {
             @Contribute { serviceType=FactoryDefaults# }
-            static Void contributeFactoryDefaults(Configuration config) {
+            Void contributeFactoryDefaults(Configuration config) {
                 config["my.config"] = "3rd party libraries set Factory defaults"
             }
         }
         
-        internal class AppModule {
+        const class AppModule {
             @Contribute { serviceType=ApplicationDefaults# }
-            static Void contributeApplicationDefaults(Configuration config) {
+            Void contributeApplicationDefaults(Configuration config) {
                 config["my.config"] = "Applications override Factory defaults"
             }
         }
         
-        internal class Main {
+        class Main {
             Void main() {
-                registry := RegistryBuilder().addModules([ConfigModule#, AppModule#, OtherModule#]).build.startup
-                example  := (Example) registry.autobuild(Example#)
+                registry := RegistryBuilder()
+                    .addModulesFromPod("afIocConfig")
+                    .addModule(AppModule#)
+                    .addModule(OtherModule#)
+                    .build()
+        
+                example  := (Example) registry.rootScope.build(Example#)
         
                 echo("--> ${example.myConfig}")  // --> Applications override Factory defaults
         
@@ -68,21 +73,22 @@ Full API & fandocs are available on the [Fantom Pod Repository](http://pods.fant
 
         C:\> fan Example.fan
         
-        [afIoc] Adding module definition for afIocConfig::AppModule
-        [afIoc] Adding module definition for afIocConfig::OtherModule
-        [afIoc] Adding module definition for afIocConfig::IocConfigModule
+        [afIoc] Adding module afIoc::IocModule
+        [afIoc] Adding module afIocConfig::IocConfigModule
+        [afIoc] Adding module Example_0::AppModule
+        [afIoc] Adding module Example_0::OtherModule
            ___    __                 _____        _
           / _ |  / /_____  _____    / ___/__  ___/ /_________  __ __
          / _  | / // / -_|/ _  /===/ __// _ \/ _/ __/ _  / __|/ // /
         /_/ |_|/_//_/\__|/_//_/   /_/   \_,_/__/\__/____/_/   \_, /
-                                    Alien-Factory IoC v2.0.0 /___/
+                                    Alien-Factory IoC v3.0.0 /___/
         
         IoC Registry built in 281ms and started up in 18ms
         
         --> Applications override Factory defaults
         
         [afIoc] IoC shutdown in 17ms
-        [afIoc] "Goodbye!" from afIoc!
+        [afIoc] IoC says, "Goodbye!"
 
 
 
@@ -90,21 +96,21 @@ Full API & fandocs are available on the [Fantom Pod Repository](http://pods.fant
 
 ### Define Config Values
 
-All config values are referenced by a unique config `id` (a string). This `id` is used to set a factory default value, application values and to inject the value in to a service.
+All config values are referenced by a unique config `id` (a string). This `id` is used to set factory default values, application values, and to inject the value in to a service.
 
-Start by setting a default value by contributing to the [FactoryDefaults](http://pods.fantomfactory.org/pods/afIocConfig/api/FactoryDefaults) service in your `AppModule`:
+Start by contributing to the [FactoryDefaults](http://pods.fantomfactory.org/pods/afIocConfig/api/FactoryDefaults) service in your `AppModule` to set a default value:
 
     @Contribute { serviceType=FactoryDefaults# }
-    static Void contributeFactoryDefaults(Configuration config) {
+    Void contributeFactoryDefaults(Configuration config) {
         config["configId"] = "666"
     }
 
 Config's may take any value as long as it is immutable (think `const` class).
 
-Anyone may then easily override your value by contributing to the [ApplicationDefaults](http://pods.fantomfactory.org/pods/afIocConfig/api/ApplicationDefaults) service:
+Anyone may then override your value by contributing to the [ApplicationDefaults](http://pods.fantomfactory.org/pods/afIocConfig/api/ApplicationDefaults) service:
 
     @Contribute { serviceType=ApplicationDefaults# }
-    static Void contributeApplicationDefaults(Configuration config) {
+    Void contributeApplicationDefaults(Configuration config) {
         config["configId"] = "69"
     }
 

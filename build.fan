@@ -9,7 +9,7 @@ class Build : BuildPod {
 
 		meta = [
 			"proj.name"		: "IoC Config",
-			"afIoc.module"	: "afIocConfig::ConfigModule",
+			"afIoc.module"	: "afIocConfig::IocConfigModule",
 			"repo.tags"		: "system",
 			"repo.public"	: "false"
 		]

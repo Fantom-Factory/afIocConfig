@@ -39,7 +39,12 @@ Quick Start
 
     class Main {
         Void main() {
-            registry := RegistryBuilder().addModules([IocConfigModule#, AppModule#, OtherModule#]).build
+            registry := RegistryBuilder()
+                .addModulesFromPod("afIocConfig")
+                .addModule(AppModule#)
+                .addModule(OtherModule#)
+                .build()
+
             example  := (Example) registry.rootScope.build(Example#)
 
             echo("--> ${example.myConfig}")  // --> Applications override Factory defaults
