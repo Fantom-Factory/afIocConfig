@@ -7,10 +7,12 @@ internal const class ConfigProvider : DependencyProvider {
 	new make(|This|in) { in(this) }
 
 	override Bool canProvide(Scope scope, InjectionCtx ctx) {
-		ctx.isFieldInjection && ctx.field.hasFacet(Config#)
+		ctx.isFieldInjection && ctx.field.hasFacet(Config#) && ctx.field.parent.isAbstract.not
 	}
 
 	override Obj? provide(Scope scope, InjectionCtx ctx) {
+					echo(ctx.field)
+
 		conSrc	:= (ConfigSource) configSource()
 		config	:= (Config) Field#.method("facet").callOn(ctx.field, [Config#])	// Stoopid F4
 		id 		:= config.id
