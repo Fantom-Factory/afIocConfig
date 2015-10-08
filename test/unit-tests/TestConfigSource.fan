@@ -34,5 +34,6 @@ internal const class T_MyModule03 {
 }
 
 internal const class T_MyService04 {
-	@Config{ id="c02" }	const Str? c01
+	@Config { id="c02" }	const Str? c01
+	new make(|This| in) { in(this) }
 }
