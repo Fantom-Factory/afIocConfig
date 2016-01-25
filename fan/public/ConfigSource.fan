@@ -13,21 +13,57 @@ const mixin ConfigSource {
 	
 	** Returns a case-insensitive map of all the config values
 	abstract Str:Obj? config()
+
+	** Returns a case-insensitive map suitable for logging. 
+	** Same as 'config()' but without environment variables and duplicated env config.
+	abstract Str:Obj? configMuted()
+
+	** Properties defined with this prefix override those without. 
+	** Example, if 'env' equals 'dev' and the given the config contains:
+	** 
+	**   acme.myProperty     = wot 
+	**   dev.acme.myProperty = ever
+	** 
+	** Then the config 'acme.myProperty' would have the value 'ever'.
+	** 
+	** 'env' is set via the special config property 'afIocConfig.env'.
+	abstract Str? env()
 }
 
 internal const class ConfigSourceImpl : ConfigSource {
-	private const TypeCoercer typeCoercer := CachingTypeCoercer()
+	private  const TypeCoercer 	typeCoercer := TypeCoercer()
+	override const Str:Obj? 	config
+	override const Str:Obj? 	configMuted
+	override const Str?			env
 
-			override const Str:Obj? config
-	@Inject	private const FactoryDefaults		factoryDefaults
-	@Inject	private const ApplicationDefaults	applicationDefaults
-
-	new make(|This|in) {
+	new make(ConfigProvider[] configProviders, |This|in) {
 		in(this)
+		
 		config := Str:Obj?[:] { caseInsensitive = true }
-		config.setAll(factoryDefaults.config)
-		config.setAll(applicationDefaults.config)
+		configProviders.each {
+			config.setAll(it.config)
+		}
+		
 		this.config = config.toImmutable
+		this.env	= config["afIocConfig.env"]
+		
+		// tidy up the config by removing env vars and overrides
+		configMuted := config.dup
+		envPrefix	:= (env ?: "") + "."
+		envPrefixes	:= typeCoercer.coerce(config["afIocConfig.envs"], Str?#)?.toStr?.split(',')?.map { "${it}." } ?: Str#.emptyList
+		config.each |val, key| {
+			if (env != null && key.startsWith(envPrefix))
+				configMuted[key[envPrefix.size..-1]] = val
+			if (envPrefixes.any { key.startsWith(it) })
+				configMuted.remove(key)
+		}
+		Env.cur.vars.each |val, key| {
+			// we could be removing useful stuff here - maybe have a rethink!? 
+			configMuted.remove(key)
+		}
+		configMuted.remove("afIocConfig.env")
+		configMuted.remove("afIocConfig.envs")
+		this.configMuted = configMuted
 	}
 	
 	override Obj? get(Str id, Type? coerceTo := null, Bool checked := true) {

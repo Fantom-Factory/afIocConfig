@@ -22,7 +22,6 @@ class Build : BuildPod {
 			"sys 1.0", 
 			
 			"afBeanUtils  1.0.8  - 1.0",
-			"afConcurrent 1.0.12 - 1.0",
 			"afIoc        3.0.0  - 3.0"
 		]
 
