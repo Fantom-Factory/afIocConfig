@@ -1,6 +1,6 @@
 using afIoc
 
-internal const class ConfigProvider : DependencyProvider {
+internal const class ConfigDependencyProvider : DependencyProvider {
 	
 	@Inject	private const |->ConfigSource| 	configSource
 	

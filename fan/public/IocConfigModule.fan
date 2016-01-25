@@ -12,8 +12,16 @@ const class IocConfigModule {
 		defs.addService(ConfigSource#)			.withRootScope
 	}
 
+	@Contribute { serviceType=ConfigSource# }
+	internal static Void contributeConfigSource(Configuration config) {
+		config["afIocConfig.factoryDefaults"] 		= config.scope.serviceById(FactoryDefaults#.qname)
+		config["afIocConfig.envVars"]				= ConfigProvider(Env.cur.vars)
+		config["afIocConfig.configFile"]			= ConfigProvider(`config.props`.toFile, false)
+		config["afIocConfig.applicationDefaults"]	= config.scope.serviceById(ApplicationDefaults#.qname)
+	}
+
 	@Contribute { serviceType=DependencyProviders# }
 	internal static Void contributeDependencyProviders(Configuration config) {
-		config["afIocConfig.configProvider"] = config.build(ConfigProvider#)
+		config["afIocConfig.configProvider"] = config.build(ConfigDependencyProvider#)
 	}
 }

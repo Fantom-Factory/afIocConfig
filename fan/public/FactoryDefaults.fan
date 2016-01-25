@@ -17,9 +17,9 @@
 ** Config values can be any immutable value.
 ** 
 ** @uses Configuration of 'Str:Obj' of IDs to Objs. Obj values must be immutable.
-const mixin FactoryDefaults {
+const mixin FactoryDefaults : ConfigProvider {
 	@NoDoc
-	abstract Str:Obj? config()
+	override abstract Str:Obj? config()
 }
 
 internal const class FactoryDefaultsImpl : FactoryDefaults {

@@ -25,7 +25,7 @@ internal class TestIdDefaults : ConfigTest {
 		verifyEq(s06.C01, "You")
 		verifyEq(s06.C02, "Got")
 		
-		conSrc	:= (ConfigSource) reg.rootScope.build(ConfigSource#)
+		conSrc	:= (ConfigSource) reg.rootScope.serviceByType(ConfigSource#)
 		verifyEq(conSrc.config["AFIOCCONFIG.C02"], "Got")
 		verifyEq(conSrc["AFIOCCONFIG.C02"], "Got")
 	}
