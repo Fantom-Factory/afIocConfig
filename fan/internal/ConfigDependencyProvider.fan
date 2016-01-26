@@ -3,7 +3,10 @@ using afIoc
 @Js
 internal const class ConfigDependencyProvider : DependencyProvider {
 	
-	@Inject	private const |->ConfigSource| 	configSource
+	// immutable funcs not available in JS
+	// @Inject	private const |->ConfigSource| 	configSource
+	
+	@Inject	private const Scope	scope
 	
 	new make(|This|in) { in(this) }
 
@@ -12,7 +15,7 @@ internal const class ConfigDependencyProvider : DependencyProvider {
 	}
 
 	override Obj? provide(Scope scope, InjectionCtx ctx) {
-		conSrc		:= (ConfigSource) configSource()
+		conSrc		:= (ConfigSource) scope.serviceById(ConfigSource#.qname)
 		config		:= (Config) ctx.field.facet(Config#)
 		id 			:= config.id
 		optional	:= config.optional ?: ctx.field.type.isNullable
