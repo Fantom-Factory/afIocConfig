@@ -4,6 +4,7 @@ using afIoc
 ** 
 ** This class is public so it may be referenced explicitly in test code.
 @NoDoc
+@Js
 const class IocConfigModule {
 	
 	internal static Void defineServices(RegistryBuilder defs) {
@@ -16,7 +17,8 @@ const class IocConfigModule {
 	internal static Void contributeConfigSource(Configuration config) {
 		config["afIocConfig.factoryDefaults"] 		= config.scope.serviceById(FactoryDefaults#.qname)
 		config["afIocConfig.envVars"]				= ConfigProvider(Env.cur.vars)
-		config["afIocConfig.configFile"]			= ConfigProvider(`config.props`.toFile, false)
+		if (Env.cur.runtime != "js")
+			config["afIocConfig.configFile"]		= ConfigProvider(`config.props`.toFile, false)
 		config["afIocConfig.applicationDefaults"]	= config.scope.serviceById(ApplicationDefaults#.qname)
 	}
 

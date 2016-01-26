@@ -1,5 +1,6 @@
 using afIoc
 
+@Js
 internal class TestConfigSource : ConfigTest {
 	
 	Void testCanOverrideNonExistantConfig() {
@@ -21,6 +22,7 @@ internal class TestConfigSource : ConfigTest {
 	
 }
 
+@Js
 @SubModule { modules=[IocConfigModule#] }
 internal const class T_MyModule03 {
 	static Void defineServices(RegistryBuilder defs) {
@@ -33,6 +35,7 @@ internal const class T_MyModule03 {
 	}
 }
 
+@Js
 internal const class T_MyService04 {
 	@Config { id="c02" }	const Str? c01
 	new make(|This| in) { in(this) }

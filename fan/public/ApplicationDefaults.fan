@@ -15,6 +15,7 @@
 ** Config values can be any immutable value.
 ** 
 ** @uses Configuration of 'Str:Obj' of IDs to Objs. Obj values must be immutable.
+@Js
 const mixin ApplicationDefaults : ConfigProvider { 
 
 	@NoDoc

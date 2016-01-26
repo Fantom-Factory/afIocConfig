@@ -2,25 +2,28 @@
 ** Use to inject config values into your classes. Example:
 ** 
 **   syntax: fantom
-** 
 **   @Config { id="gzipThreshold" }
 **   private Int gzipThreshold
 ** 
-** If 'id' is not provided, it takes on the name of the field. Therefore the following is identical to the above:
+** If 'id' is not provided, it is matched against a combination of field name, class name, and pod name. 
+** See user guide for a complete description of the matching strategy. 
 ** 
-**   syntax: fantom
-** 
-**   @Config
-**   private Int gzipThreshold
-** 
+@Js
 facet class Config {
 	** The id of the config value to be injected.
-	const Str? id := null
+	** 
+	** If 'null' then a matching strategy is utilised. 
+	const Str? id
 	
 	// null is better than a 'def' value because IocConfig can never supply null, therefore there 
-	// is never any ambiguity 
-	** If 'true' and the config id cannot be found then 'null' is returned and an Err is not thrown.
+	// is never any ambiguity
+	** 'optional' means an Err is **not** thrown if the config cannot be found.
+	** Fields are not set if config could not be found. This lets 'optional' fields take default values.
 	** 
-	** Just ensure the field is 'nullable'!
-	const Bool optional := false
+	**   syntax: fantom
+	**   @Config
+	**   private Duration? timeToSelfDestruct := 10sec
+	** 
+	** If 'null' then it defaults to 'true' if the field is nullable.    
+	const Bool? optional
 }
