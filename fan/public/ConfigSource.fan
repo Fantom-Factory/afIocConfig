@@ -46,11 +46,10 @@ internal const class ConfigSourceImpl : ConfigSource {
 			config.setAll(it.config)
 		}
 		
-		this.config = config.toImmutable
 		this.env	= config["afIocConfig.env"]
 		
 		// tidy up the config by removing env vars and overrides
-		configMuted := config.dup
+		configMuted	:= config.dup
 		envPrefix	:= (env ?: "") + "."
 		envPrefixes	:= typeCoercer.coerce(config["afIocConfig.envs"], Str?#)?.toStr?.split(',')?.map { "${it}." } ?: Str#.emptyList
 		config.each |val, key| {
@@ -59,9 +58,12 @@ internal const class ConfigSourceImpl : ConfigSource {
 			if (envPrefixes.any { key.startsWith(it) })
 				configMuted.remove(key)
 		}
-		Env.cur.vars.each |val, key| {
-			// we could be removing useful stuff here - maybe have a rethink!? 
-			configMuted.remove(key)
+		this.config = configMuted.toImmutable
+
+		// remove environment variables from muted map
+		Env.cur.vars.keys.each {
+			// we could be removing useful stuff here - maybe have a re-think!? 
+			configMuted.remove(it)
 		}
 		configMuted.remove("afIocConfig.env")
 		configMuted.remove("afIocConfig.envs")
@@ -81,7 +83,7 @@ internal const class ConfigSourceImpl : ConfigSource {
 }
 
 ** Thrown when a config ID has not been mapped.
-@NoDoc
+@Js @NoDoc
 const class ConfigNotFoundErr : ArgErr, NotFoundErr {
 	override const Str?[]	availableValues
 	override const Str		valueMsg	:= "Available Config IDs:"

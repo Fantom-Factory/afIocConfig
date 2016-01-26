@@ -51,6 +51,10 @@ internal class TestConfig : ConfigTest {
 		s07	:= (T_MyService07) reg.rootScope.serviceById("s07")			
 		verifyNull(s07.c04)
 		verifyNull(s07.cNoId)
+		verifyNull(s07.c04b)
+		
+		// test default values
+		verifyEq(s07.c04c, "default")
 	}
 	
 	Void testCoerceValue() {
@@ -117,7 +121,7 @@ internal const class T_MyService01 {
 internal const class T_MyService02 {
 	new make(|This|in) { in(this) }
 	// c04 doesn't exist
-	@Config { id="c04" } const Str? c04
+	@Config { id="c04" } const Str c04
 }
 
 @Js
@@ -126,5 +130,6 @@ internal const class T_MyService07 {
 	// c04 doesn't exist
 	@Config { optional=true; id="c04" }	const Str? c04
 	@Config { id="c04" }				const Str? c04b	// nullable indicates optional
+	@Config { id="c04" }				const Str? c04c	:= "default"
 	@Config { optional=true }			const Str? cNoId
 }
