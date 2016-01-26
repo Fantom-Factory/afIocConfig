@@ -6,7 +6,7 @@ using afIoc
 @NoDoc
 @Js
 const class IocConfigModule {
-	
+
 	internal static Void defineServices(RegistryBuilder defs) {
 		defs.addService(FactoryDefaults#)		.withRootScope
 		defs.addService(ApplicationDefaults#)	.withRootScope
