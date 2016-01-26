@@ -12,12 +12,13 @@ internal const class ConfigDependencyProvider : DependencyProvider {
 	}
 
 	override Obj? provide(Scope scope, InjectionCtx ctx) {
-		conSrc	:= (ConfigSource) configSource()
-		config	:= (Config) Field#.method("facet").callOn(ctx.field, [Config#])	// Stoopid F4
-		id 		:= config.id
+		conSrc		:= (ConfigSource) configSource()
+		config		:= (Config) ctx.field.facet(Config#)
+		id 			:= config.id
+		optional	:= config.optional ?: ctx.field.type.isNullable
 		
 		if (id != null)
-			return conSrc.get(id, ctx.field.type, !config.optional)
+			return conSrc.get(id, ctx.field.type, !optional)
 		
 		pod		:= ctx.field.parent.pod.name.decapitalize
 		clazz	:= ctx.field.parent.name.decapitalize
@@ -30,7 +31,7 @@ internal const class ConfigDependencyProvider : DependencyProvider {
 			name = conSrc.config.keys.find { this.fromDisplayName(it).equalsIgnoreCase(field) }
 
 		if (name == null)
-			return config.optional ? null : throw ConfigNotFoundErr(ErrMsgs.couldNotDetermineId(ctx.field, qnames), conSrc.config.keys)
+			return optional ? null : throw ConfigNotFoundErr(ErrMsgs.couldNotDetermineId(ctx.field, qnames), conSrc.config.keys)
 
 		value 	:= conSrc.get(name, ctx.field.type)
 		return value

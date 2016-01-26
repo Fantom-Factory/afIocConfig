@@ -56,7 +56,7 @@ internal class T_MyService03 {
 
 @Js
 internal class T_MyService05 {
-	@Config	Str? c05
+	@Config	{ optional=false } Str? c05
 }
 
 @Js
