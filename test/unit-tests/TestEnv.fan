@@ -26,7 +26,7 @@ internal class TestEnv : ConfigTest {
 		verifyEq   (config.config["acme.prop"], "anderson")
 		verifyFalse(config.config.containsKey("dev.acme.prop"))
 		verifyFalse(config.config.containsKey("test.acme.prop"))
-		verifyFalse(config.config.containsKey("test.acme.prop"))
+		verifyFalse(config.config.containsKey("prod.acme.prop"))
 
 		// test config logging
 		configClass := reg.activeScope.build(T_MyConfigClass#) as T_MyConfigClass

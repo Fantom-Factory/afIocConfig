@@ -7,6 +7,7 @@ v1.1.0
  - New: Config from environment varaibles are added by default.
  - New: Config from a 'config.props' file are added by default.
  - New: Environmental config properties override default config properties.
+ - New: Now available in Javascript!
  - Chg: Updated to work with [IoC v3]`pod:afIoc`.
  - Chg: Config defaults to optional should the field be nullable.
 
