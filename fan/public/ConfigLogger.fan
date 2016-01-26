@@ -1,5 +1,6 @@
 using afIoc
 
+@Js
 const mixin ConfigLogger {
 	
 	@PostInjection

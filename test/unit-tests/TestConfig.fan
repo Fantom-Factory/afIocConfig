@@ -1,5 +1,6 @@
 using afIoc
 
+@Js
 internal class TestConfig : ConfigTest {
 	
 	Void testFactoryDef() {
@@ -59,6 +60,7 @@ internal class TestConfig : ConfigTest {
 	}
 }
 
+@Js
 @SubModule { modules=[IocConfigModule#] }
 internal const class T_MyModule01 {
 	static Void defineServices(RegistryBuilder defs) {
@@ -92,6 +94,7 @@ internal const class T_MyModule01 {
 	}
 }
 
+@Js
 internal const class T_MyService01 {
 	new make(|This|in) { in(this) }
 	
@@ -110,15 +113,18 @@ internal const class T_MyService01 {
 	@Config { id="c08" } const Int? c08	// coerce fromStr
 }
 
+@Js
 internal const class T_MyService02 {
 	new make(|This|in) { in(this) }
 	// c04 doesn't exist
 	@Config { id="c04" } const Str? c04
 }
 
+@Js
 internal const class T_MyService07 {
 	new make(|This|in) { in(this) }
 	// c04 doesn't exist
 	@Config { optional=true; id="c04" }	const Str? c04
+	@Config { id="c04" }				const Str? c04b	// nullable indicates optional
 	@Config { optional=true }			const Str? cNoId
 }

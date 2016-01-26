@@ -1,4 +1,5 @@
 
+@Js
 abstract internal class ConfigTest : Test {
 
 	override Void setup() {

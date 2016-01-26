@@ -1,5 +1,6 @@
 using afIoc
 
+@Js
 internal class TestIdDefaults : ConfigTest {
 
 	Void testDefaultIds() {
@@ -31,6 +32,7 @@ internal class TestIdDefaults : ConfigTest {
 	}
 }
 
+@Js
 @SubModule { modules=[IocConfigModule#] }
 internal const class T_MyModule02 {
 	@Contribute { serviceType=FactoryDefaults# }
@@ -43,6 +45,7 @@ internal const class T_MyModule02 {
 	}
 }
 
+@Js
 internal class T_MyService03 {
 	@Config	Str? c01
 	@Config	Str? c02
@@ -51,10 +54,12 @@ internal class T_MyService03 {
 	@Config	Str? c05GotDots
 }
 
+@Js
 internal class T_MyService05 {
 	@Config	Str? c05
 }
 
+@Js
 internal class T_MyService06 {
 	@Config	Str? C01
 	@Config	Str? C02

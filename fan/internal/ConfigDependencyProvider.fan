@@ -1,5 +1,6 @@
 using afIoc
 
+@Js
 internal const class ConfigDependencyProvider : DependencyProvider {
 	
 	@Inject	private const |->ConfigSource| 	configSource

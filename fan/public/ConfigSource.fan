@@ -3,6 +3,7 @@ using afBeanUtils::TypeCoercer
 using afBeanUtils::NotFoundErr
 
 ** (Service) - Provides the config values. 
+@Js
 const mixin ConfigSource {
 	
 	** Return the config value with the given id, optionally coercing it to the given type.
@@ -30,6 +31,7 @@ const mixin ConfigSource {
 	abstract Str? env()
 }
 
+@Js
 internal const class ConfigSourceImpl : ConfigSource {
 	private  const TypeCoercer 	typeCoercer := TypeCoercer()
 	override const Str:Obj? 	config

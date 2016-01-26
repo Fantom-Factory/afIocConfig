@@ -1,4 +1,5 @@
 
+@Js
 internal const class ErrMsgs {
 
 	static Str configNotFound(Str id) {

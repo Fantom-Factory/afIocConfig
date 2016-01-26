@@ -1,4 +1,5 @@
 
+@Js
 const mixin ConfigProvider {
 
 	abstract Str:Obj config()
@@ -14,6 +15,7 @@ const mixin ConfigProvider {
 	}
 }
 
+@Js
 internal const class SimpleConfigProvider : ConfigProvider {
 	override const Str:Obj config
 	
