@@ -83,8 +83,8 @@ internal const class ConfigSourceImpl : ConfigSource {
 }
 
 ** Thrown when a config ID has not been mapped.
-@Js @NoDoc
-const class ConfigNotFoundErr : ArgErr, NotFoundErr {
+@Js @NoDoc // we can't subclass ArgErr in JS - see http://fantom.org/forum/topic/2468
+const class ConfigNotFoundErr : Err, NotFoundErr {
 	override const Str?[]	availableValues
 	override const Str		valueMsg	:= "Available Config IDs:"
 

@@ -22,6 +22,7 @@ const mixin ApplicationDefaults : ConfigProvider {
 	override abstract Str:Obj? config()
 }
 
+@Js
 internal const class ApplicationDefaultsImpl : ApplicationDefaults {
 	override const Str:Obj? config
 	
