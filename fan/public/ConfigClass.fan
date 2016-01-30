@@ -1,5 +1,33 @@
 using afIoc
 
+** A utility mixin that simply logs injected config on startup.
+** Because sometimes it's nice to see what your app is using! 
+** Example:
+** 
+** pre>
+** syntax: fantom
+** using afIocConfig
+** 
+** const class AppConfig : ConfigClass {
+**     @Config const Uri jdbcUrl
+**     @Config const Str username
+**     @Config const Str password
+**     @Config const Str messageOfTheDay
+** 
+**     new make(|This| f) { f(this) } 
+** }
+** <pre 
+** 
+** Will print:
+** 
+** pre>
+** App Config
+** ==========
+** Jdbc Url ......... : jdbc:wotever
+** Username ......... : knobs
+** Password ......... : secret
+** Message Of The Day : Eat moar ice-cream!
+** <pre
 @Js
 const mixin ConfigClass {
 	
