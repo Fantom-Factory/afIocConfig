@@ -46,7 +46,7 @@ internal const class ConfigSourceImpl : ConfigSource {
 			config.setAll(it.config)
 		}
 		
-		this.env	= config["afIocConfig.env"].toStr.trimToNull
+		this.env	= config["afIocConfig.env"]?.toStr?.trimToNull
 		
 		// tidy up the config by removing env vars and overrides
 		configMuted	:= config.dup
