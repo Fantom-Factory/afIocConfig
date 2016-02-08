@@ -7,14 +7,14 @@ using afIoc
 @Js
 const class IocConfigModule {
 
-	internal static Void defineServices(RegistryBuilder defs) {
+	internal Void defineServices(RegistryBuilder defs) {
 		defs.addService(FactoryDefaults#)		.withRootScope
 		defs.addService(ApplicationDefaults#)	.withRootScope
 		defs.addService(ConfigSource#)			.withRootScope
 	}
 
 	@Contribute { serviceType=ConfigSource# }
-	internal static Void contributeConfigSource(Configuration config) {
+	internal Void contributeConfigSource(Configuration config) {
 		config["afIocConfig.factoryDefaults"] 		= config.scope.serviceById(FactoryDefaults#.qname)
 		config["afIocConfig.envVars"]				= ConfigProvider(Env.cur.vars)
 		if (Env.cur.runtime != "js")
@@ -23,7 +23,7 @@ const class IocConfigModule {
 	}
 
 	@Contribute { serviceType=DependencyProviders# }
-	internal static Void contributeDependencyProviders(Configuration config) {
+	internal Void contributeDependencyProviders(Configuration config) {
 		config["afIocConfig.configProvider"] = config.build(ConfigDependencyProvider#)
 	}
 }
