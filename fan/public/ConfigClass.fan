@@ -12,7 +12,7 @@ const mixin ConfigClass {
 	static Str logConfigToStr(Obj configClass, [Str:Obj]? extra := null) {
 		map := Str:Obj?[:] { ordered = true }
 		configClass.typeof.fields.findAll { it.hasFacet(Config#) }.each {
-			map[it.name.toDisplayName] = it.get(configClass).toStr
+			map[it.name.toDisplayName] = it.get(configClass)?.toStr
 		}
 		if (extra != null)
 			map.addAll(extra)

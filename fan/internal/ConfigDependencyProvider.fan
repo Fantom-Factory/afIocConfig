@@ -18,6 +18,8 @@ internal const class ConfigDependencyProvider : DependencyProvider {
 		conSrc		:= (ConfigSource) scope.serviceById(ConfigSource#.qname)
 		config		:= (Config) ctx.field.facet(Config#)
 		id 			:= config.id
+		// hasDefault() doesn't exist - see http://fantom.org/forum/topic/2507
+//		optional	:= config.optional ?: (ctx.field.type.isNullable || ctx.field.hasDefault)
 		optional	:= config.optional ?: ctx.field.type.isNullable
 		
 		if (id != null)

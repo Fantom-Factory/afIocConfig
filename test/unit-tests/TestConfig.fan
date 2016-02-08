@@ -51,10 +51,16 @@ internal class TestConfig : ConfigTest {
 		s07	:= (T_MyService07) reg.rootScope.serviceById("s07")			
 		verifyNull(s07.c04)
 		verifyNull(s07.cNoId)
+		
+		// test nullable fields are optional by default
 		verifyNull(s07.c04b)
 		
-		// test default values
+		// test optional fields can have default values
 		verifyEq(s07.c04c, "default")
+
+		// test non-nullable fields are still optional if they have a default value
+		// meh - can't do this - field.hasDefault() doesn't exist - see http://fantom.org/forum/topic/2507
+		// verifyEq(s07.c04d, "default")
 	}
 	
 	Void testCoerceValue() {
