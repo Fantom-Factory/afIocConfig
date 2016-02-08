@@ -31,13 +31,17 @@ using afIoc
 @Js
 const mixin ConfigClass {
 	
+	** Logs the '@Config' fields to 'info'.
 	@PostInjection
-	virtual Void logConfig(Type type := this.typeof) {
-		msg := logConfigToStr(this)
+	virtual Void logConfig() {
+		msg := dump(this)
 		typeof.pod.log.info(msg)
 	}
 	
-	static Str logConfigToStr(Obj configClass, [Str:Obj]? extra := null) {
+	** Dumps the given 'configClass' to a 'Str', appending any extra properties to the end.
+	** 
+	** Any key starting with '---' is used as a separator.
+	static Str dump(Obj configClass, [Str:Obj]? extra := null) {
 		map := Str:Obj?[:] { ordered = true }
 		configClass.typeof.fields.findAll { it.hasFacet(Config#) }.each {
 			map[it.name.toDisplayName] = it.get(configClass)?.toStr
@@ -52,12 +56,11 @@ const mixin ConfigClass {
 
 		keySize := map.keys.reduce(0) |Int size, key->Int| { size.max(key.size) } as Int
 		map.each |v, k| {
-			if (v != null) {
-				if (k == "----")
-					msg += "".padr(keySize + 1, '-') + " : $v\n"
-				else
-					msg += "$k ".padr(keySize + 1, '.') + " : $v\n"
-			}
+			val := v?.toStr ?: "n/a"
+			if (k.startsWith("---"))
+				msg +=    "".padr(keySize + 1, '-') + " : $val\n"
+			else
+				msg += "$k ".padr(keySize + 1, '.') + " : $val\n"
 		}
 
 		return msg
