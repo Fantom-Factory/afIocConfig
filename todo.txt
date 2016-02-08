@@ -1,0 +1,5 @@
+
+For Future
+==========
+Read config from files
+ - Easy for users to do themselves
