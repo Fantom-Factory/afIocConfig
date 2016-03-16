@@ -6,6 +6,11 @@ using afBeanUtils::NotFoundErr
 @Js
 const mixin ConfigSource {
 	
+	** Creates a 'ConfigSource' instance with the given 'ConfigProviders'.
+	static new make(ConfigProvider[] configProviders) {
+		ConfigSourceImpl(configProviders)
+	}
+	
 	** Return the config value with the given id, optionally coercing it to the given type.
 	** 
 	** Throws 'ArgErr' if the ID could not be found.
@@ -38,9 +43,7 @@ internal const class ConfigSourceImpl : ConfigSource {
 	override const Str:Obj? 	configMuted
 	override const Str?			env
 
-	new make(ConfigProvider[] configProviders, |This|in) {
-		in(this)
-		
+	new make(ConfigProvider[] configProviders) {
 		config := Str:Obj?[:] { caseInsensitive = true }
 		configProviders.each {
 			config.setAll(it.config)

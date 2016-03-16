@@ -8,6 +8,7 @@ v1.1.0
  - New: Config from a 'config.props' file are added by default.
  - New: Environmental config properties override default config properties.
  - New: Now available in Javascript!
+ - New: Added public ctor to 'ConfigSource'.
  - Chg: Updated to work with [IoC v3]`pod:afIoc`.
  - Chg: Config defaults to optional should the field be nullable.
 
