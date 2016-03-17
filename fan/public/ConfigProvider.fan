@@ -45,6 +45,11 @@ const mixin ConfigProvider {
 	static new fromMap(Str:Obj map) {
 		SimpleConfigProvider(map)
 	}
+	
+	@NoDoc
+	override Str toStr() {
+		config.toStr
+	}
 }
 
 @Js
