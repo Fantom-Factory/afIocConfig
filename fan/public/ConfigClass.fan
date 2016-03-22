@@ -43,7 +43,7 @@ const mixin ConfigClass {
 	** Any key starting with '---' is used as a separator.
 	** 
 	** Is 'static' so it may be called from anywhere, even non-const services.
-	static Str dump(Obj configClass, [Str:Obj]? extra := null) {
+	static Str dump(Obj configClass, Str? title := null, [Str:Obj]? extra := null) {
 		map := Str:Obj?[:] { ordered = true }
 		configClass.typeof.fields.findAll { it.hasFacet(Config#) }.each {
 			map[it.name.toDisplayName] = it.get(configClass)?.toStr
@@ -51,7 +51,7 @@ const mixin ConfigClass {
 		if (extra != null)
 			map.addAll(extra)
 
-		tit := configClass.typeof.name.toDisplayName
+		tit := title ?: configClass.typeof.name.toDisplayName
 		msg := "\n\n"
 		msg += "${tit}\n"
 		msg += "".padl(tit.size, '=') + "\n"
