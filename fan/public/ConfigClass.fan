@@ -41,6 +41,8 @@ const mixin ConfigClass {
 	** Dumps the given 'configClass' to a 'Str', appending any extra properties to the end.
 	** 
 	** Any key starting with '---' is used as a separator.
+	** 
+	** Is 'static' so it may be called from anywhere, even non-const services.
 	static Str dump(Obj configClass, [Str:Obj]? extra := null) {
 		map := Str:Obj?[:] { ordered = true }
 		configClass.typeof.fields.findAll { it.hasFacet(Config#) }.each {
