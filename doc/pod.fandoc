@@ -7,6 +7,8 @@ Config values are essentially constants, but their value may be overridden on re
 This makes them great for use by 3rd party libraries.
 The libraries can set sensible default values, and applications may then optionally override them.
 
+IoC Config also grabs values from environment variables and '.props' files. It even provides environmental overrides allowing your test server to run with different configuration than your dev, or prod server!
+
 
 
 Quick Start
@@ -177,7 +179,7 @@ syntax: fantom
 
 @Contribute { serviceType=ConfigSource# }
 internal Void contributeConfigSource(Configuration config) {
-	config["myApp.config"] = ConfigProvider(`app.props`.toFile)
+    config["myApp.config"] = ConfigProvider(`app.props`.toFile)
 }
 <pre
 

@@ -12,6 +12,8 @@ Config values are essentially constants, but their value may be overridden on re
 
 This makes them great for use by 3rd party libraries. The libraries can set sensible default values, and applications may then optionally override them.
 
+IoC Config also grabs values from environment variables and `.props` files. It even provides environmental overrides allowing your test server to run with different configuration than your dev, or prod server!
+
 ## Install
 
 Install `IoC Config` with the Fantom Repository Manager ( [fanr](http://fantom.org/doc/docFanr/Tool.html#install) ):
@@ -73,7 +75,7 @@ Full API & fandocs are available on the [Fantom Pod Repository](http://pods.fant
 
         C:\> fan Example.fan
         
-        [afIoc] Adding module afIoc::IocModule
+        [afIoc] Adding module definitions from pod 'afIocConfig'
         [afIoc] Adding module afIocConfig::IocConfigModule
         [afIoc] Adding module Example_0::AppModule
         [afIoc] Adding module Example_0::OtherModule
@@ -87,14 +89,12 @@ Full API & fandocs are available on the [Fantom Pod Repository](http://pods.fant
         
         --> Applications override Factory defaults
         
-        [afIoc] IoC shutdown in 17ms
+        [afIoc] IoC shutdown in 7ms
         [afIoc] IoC says, "Goodbye!"
 
 
 
-## Usage
-
-### Define Config Values
+## Define Config
 
 All config values are referenced by a unique config `id` (a string). This `id` is used to set factory default values, application values, and to inject the value in to a service.
 
@@ -102,7 +102,7 @@ Start by contributing to the [FactoryDefaults](http://pods.fantomfactory.org/pod
 
     @Contribute { serviceType=FactoryDefaults# }
     Void contributeFactoryDefaults(Configuration config) {
-        config["configId"] = "666"
+        config["configId"] = "README.MD"
     }
 
 Config's may take any value as long as it is immutable (think `const` class).
@@ -111,10 +111,10 @@ Anyone may then override your value by contributing to the [ApplicationDefaults]
 
     @Contribute { serviceType=ApplicationDefaults# }
     Void contributeApplicationDefaults(Configuration config) {
-        config["configId"] = "69"
+        config["configId"] = "readme.txt"
     }
 
-### Inject Config Values
+## Inject Config
 
 Use the `@Config` facet to inject config values into your service.
 
@@ -148,4 +148,65 @@ Then the following IDs would be looked up (in order):
 If the config value is still not found then, as a last resort, the field name is checked against the config IDs after they have been stripped of any non-alphaNum characters. That means you can inject config values with IDs similar to `afIocEnv.isDev` with:
 
     @Config Bool afIocEnvIsDev
+
+## Default Config
+
+Config values are automaticially added from:
+
+- environment variables
+- a `config.props` file
+
+`config.props` should be in the current directory where Fantom was started, and is a handy starting place for externalising config.
+
+Config is added in the following order:
+
+- `afIocConfig.factoryDefaults`
+- `afIocConfig.envVars`
+- `afIocConfig.configFile`
+- `afIocConfig.applicationDefaults`
+
+With later contributions overriding previous ones.
+
+## Custom Config
+
+To add your own sources of config, contribute [ConfigProvider](http://pods.fantomfactory.org/pods/afIocConfig/api/ConfigProvider) instances to `ConfigSource`. `ConfigProvider` has helper methods for creating instances from Str maps and `.props` files.
+
+```
+@Contribute { serviceType=ConfigSource# }
+internal Void contributeConfigSource(Configuration config) {
+    config["myApp.config"] = ConfigProvider(`app.props`.toFile)
+}
+```
+
+## Environment Overrides
+
+Let's say you define a database connection URL:
+
+    jdbcUrl = jdbc:mysql://localhost:3306/fanlocal
+
+While this may work on your machine, it is common to have different config for different environments. For example, you'll probably have different connection URLs for dev, test, and prod.
+
+IoC Config provides an easy mechanism to switch config dependent on your environment. If  `afIocConfig.env` is defined, then any config using that value as a prefix will override any config without.
+
+Consider the following:
+
+```
+afIocConfig.env = prod
+jdbcUrl         = jdbc:mysql://localhost:3306/fanlocal
+
+test.jdbcUrl    = jdbc:mysql://localhost:3306/fantest
+
+prod.jdbcUrl    = jdbc:mysql://megacorp:3306/winning
+```
+
+While `jdbcUrl` would normally have the value `jdbc:mysql://localhost:3306/fanlocal`, because `afIocConfig.env` has a value of `prod`, `jdbcUrl` is overridden with the value of `prod.jdbcUrl`. The above could be re-written as:
+
+```
+afIocConfig.env = prod
+jdbcUrl         = jdbc:mysql://megacorp:3306/winning
+```
+
+A strategy for defining environmental sensitive config may be to list all possible values, complete with environmental prefixes, in a `config.props` file. Then switch between the config using a environment variable.
+
+Note that [IoC Env](http://pods.fantomfactory.org/pods/afIocEnv) automatically sets the `afIocConfig.env` config value for you according to the `ENV` environment variable.
 
