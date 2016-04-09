@@ -11,7 +11,7 @@ class Build : BuildPod {
 			"proj.name"		: "IoC Config",
 			"afIoc.module"	: "afIocConfig::IocConfigModule",
 			"repo.tags"		: "system",
-			"repo.public"	: "false"
+			"repo.public"	: "true"
 		]
 
 		index = [	
@@ -19,7 +19,7 @@ class Build : BuildPod {
 		]
 
 		depends = [
-			"sys 1.0", 
+			"sys          1.0.68 - 1.0", 
 			
 			"afBeanUtils  1.0.8  - 1.0",
 			"afIoc        3.0.0  - 3.0"
