@@ -178,7 +178,7 @@ pre>
 syntax: fantom
 
 @Contribute { serviceType=ConfigSource# }
-internal Void contributeConfigSource(Configuration config) {
+Void contributeConfigSource(Configuration config) {
     config["myApp.config"] = ConfigProvider(`app.props`.toFile)
 }
 <pre
