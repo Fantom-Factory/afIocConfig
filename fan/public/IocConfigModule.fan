@@ -3,8 +3,7 @@ using afIoc
 ** The [IoC]`pod:afIoc` module class.
 ** 
 ** This class is public so it may be referenced explicitly in test code.
-@NoDoc
-@Js
+@NoDoc @Js
 const class IocConfigModule {
 
 	internal Void defineServices(RegistryBuilder defs) {

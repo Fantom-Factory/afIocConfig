@@ -20,6 +20,17 @@ internal class TestConfigSource : ConfigTest {
 		verifyEq(src.get("c02"), "Belgium")
 	}
 	
+	Void testAnotherDefault() {
+		reg := RegistryBuilder()
+			.addModule(IocConfigModule#)
+			.contributeToServiceType(FactoryDefaults#) |Configuration config| {
+				config["skySpark.apiUrl"] = "http://awesome!"
+			}.build
+
+		cls := reg.activeScope.build(T_MyService08#) as T_MyService08
+		verifyEq(cls.skySparkApiUrl, "http://awesome!")
+	}
+	
 }
 
 @Js
@@ -38,5 +49,11 @@ internal const class T_MyModule03 {
 @Js
 internal const class T_MyService04 {
 	@Config { id="c02" }	const Str? c01
+	new make(|This| in) { in(this) }
+}
+
+@Js
+internal const class T_MyService08 {
+	@Config const Str skySparkApiUrl
 	new make(|This| in) { in(this) }
 }

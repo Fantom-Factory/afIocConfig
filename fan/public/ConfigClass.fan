@@ -38,14 +38,23 @@ const mixin ConfigClass {
 		typeof.pod.log.info(msg)
 	}
 	
-	** Dumps the given 'configClass' to a 'Str', appending any extra properties to the end.
+	** Dumps '@Config' fields of the given 'configClass' to a 'Str', appending any extra properties to the end.
 	** 
 	** Any key starting with '---' is used as a separator.
 	** 
 	** Is 'static' so it may be called from anywhere, even non-const services.
 	static Str dump(Obj configClass, Str? title := null, [Str:Obj]? extra := null) {
+		dumpFields(configClass, configClass.typeof.fields.findAll { it.hasFacet(Config#) }, title, extra)
+	}
+
+	** Dumps fields of the given 'configClass' to a 'Str', appending any extra properties to the end.
+	** 
+	** Any key starting with '---' is used as a separator.
+	** 
+	** Is 'static' so it may be called from anywhere, even non-const services.
+	static Str dumpFields(Obj configClass, Field[] fields, Str? title := null, [Str:Obj]? extra := null) {
 		map := Str:Obj?[:] { ordered = true }
-		configClass.typeof.fields.findAll { it.hasFacet(Config#) }.each {
+		fields.each {
 			map[it.name.toDisplayName] = it.get(configClass)?.toStr
 		}
 		if (extra != null)

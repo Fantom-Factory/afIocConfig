@@ -1,5 +1,5 @@
 
-** Implement to provide a new source of config properties.
+** Implement to provide a new source of config properties, or use one of the static methods.
 ** Instances should be contributed to 'ConfigSource':
 ** 
 ** pre>
