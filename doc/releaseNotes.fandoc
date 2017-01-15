@@ -3,7 +3,6 @@ Versions
 
 v1.1.2
 ======
- - New: Support for optional dots in ID names.
  - New: 'ConfigClass.dumpFields()' to dump more than '@Config' fields.
 
 v1.1.0
