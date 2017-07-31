@@ -29,7 +29,7 @@ using afIoc
 ** Message Of The Day : Eat moar ice-cream!
 ** <pre
 @Js
-const mixin ConfigClass {
+mixin ConfigClass {
 	
 	** Logs the '@Config' fields to 'info'.
 	@PostInjection
@@ -42,7 +42,7 @@ const mixin ConfigClass {
 	** 
 	** Any key starting with '---' is used as a separator.
 	** 
-	** Is 'static' so it may be called from anywhere, even non-const services.
+	** Is 'static' so it may be called from anywhere.
 	static Str dump(Obj configClass, Str? title := null, [Str:Obj]? extra := null) {
 		dumpFields(configClass, configClass.typeof.fields.findAll { it.hasFacet(Config#) }, title, extra)
 	}
@@ -51,14 +51,14 @@ const mixin ConfigClass {
 	** 
 	** Any key starting with '---' is used as a separator.
 	** 
-	** Is 'static' so it may be called from anywhere, even non-const services.
+	** Is 'static' so it may be called from anywhere.
 	static Str dumpFields(Obj configClass, Field[] fields, Str? title := null, [Str:Obj]? extra := null) {
 		map := Str:Obj?[:] { ordered = true }
 		fields.each {
 			map[it.name.toDisplayName] = it.get(configClass)?.toStr
 		}
 		if (extra != null)
-			map.addAll(extra)
+			map.setAll(extra)
 
 		tit := title ?: configClass.typeof.name.toDisplayName
 		msg := "\n\n"
