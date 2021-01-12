@@ -156,17 +156,21 @@ Config values are automaticially added from:
 
  - environment variables
  - a 'config.props' file
+ - a 'secret.props' file
 
-'config.props' should be in the current directory where Fantom was started, and is a handy starting place for externalising config.
+'config.props' and 'secret.props' should be in the current directory where Fantom was started, and is a handy starting place for externalising config.
 
 Config is added in the following order:
 
  - 'afIocConfig.factoryDefaults'
  - 'afIocConfig.envVars'
  - 'afIocConfig.configFile'
+ - 'afIocConfig.secretFile'
  - 'afIocConfig.applicationDefaults'
 
 With later contributions overriding previous ones.
+
+It is conventional to place standard application config in 'config.props' and any user or environment specific overrides in 'secret.props'. 'config.props' is then checked into Source Code Management, but 'secret.props' is usually kept local to the executing machine.
 
 
 

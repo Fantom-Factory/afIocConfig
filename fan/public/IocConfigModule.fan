@@ -16,8 +16,10 @@ const class IocConfigModule {
 	internal Void contributeConfigSource(Configuration config) {
 		config["afIocConfig.factoryDefaults"] 		= config.scope.serviceById(FactoryDefaults#.qname)
 		config["afIocConfig.envVars"]				= ConfigProvider(Env.cur.vars)
-		if (Env.cur.runtime != "js")
+		if (Env.cur.runtime != "js") {
 			config["afIocConfig.configFile"]		= ConfigProvider(`config.props`.toFile, false)
+			config["afIocConfig.secretFile"]		= ConfigProvider(`secret.props`.toFile, false)
+		}
 		config["afIocConfig.applicationDefaults"]	= config.scope.serviceById(ApplicationDefaults#.qname)
 	}
 
