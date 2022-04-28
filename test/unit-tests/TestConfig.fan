@@ -3,7 +3,8 @@ using afIoc
 @Js
 internal class TestConfig : ConfigTest {
 
-	Void testDocConfig() {
+	// I don't actually like this - fields must be public and be doc'ed
+	Void XXXtestDocConfig() {
 		reg := RegistryBuilder().addModule(T_MyModule01#).build
 		s09	:= (T_MyService09) reg.rootScope.serviceById("s09")
 		verifyEq(s09.c01, "Belgium")	// SHOULD be injected
@@ -135,7 +136,7 @@ internal const class T_MyService01 {
 const class T_MyService09 {
 	new make(|This|in) { in(this) }
 	
-	** @config
+	** @afIocConfig
 	const Str? c01
 	
 	const Str? c02

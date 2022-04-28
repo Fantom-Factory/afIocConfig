@@ -15,9 +15,10 @@ internal const class ConfigDependencyProvider : DependencyProvider {
 			if (ctx.field.hasFacet(Config#))
 				return true
 
-			fieldDoc := ctx.field.doc
-			if (fieldDoc != null && fieldDoc.contains("@config"))
-				return true
+			// I don't actually like this - fields must be public and be doc'ed
+//			fieldDoc := ctx.field.doc
+//			if (fieldDoc != null && fieldDoc.contains("@afIocConfig"))
+//				return true
 		}
 		return false
 	}
