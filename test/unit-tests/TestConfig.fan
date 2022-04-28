@@ -2,6 +2,13 @@ using afIoc
 
 @Js
 internal class TestConfig : ConfigTest {
+
+	Void testDocConfig() {
+		reg := RegistryBuilder().addModule(T_MyModule01#).build
+		s09	:= (T_MyService09) reg.rootScope.serviceById("s09")
+		verifyEq(s09.c01, "Belgium")	// SHOULD be injected
+		verifyEq(s09.c02, null)			// should NOT be injected
+	}
 	
 	Void testFactoryDef() {
 		reg := RegistryBuilder().addModule(T_MyModule01#).build
@@ -77,6 +84,7 @@ internal const class T_MyModule01 {
 		defs.addService(T_MyService01#).withId("s01")
 		defs.addService(T_MyService02#).withId("s02")
 		defs.addService(T_MyService07#).withId("s07")
+		defs.addService(T_MyService09#).withId("s09")
 	}	
 
 	@Contribute { serviceType=FactoryDefaults# }
@@ -121,6 +129,16 @@ internal const class T_MyService01 {
 	@Config { id="c07" } const Str? c07
 
 	@Config { id="c08" } const Int? c08	// coerce fromStr
+}
+
+@Js
+const class T_MyService09 {
+	new make(|This|in) { in(this) }
+	
+	** @config
+	const Str? c01
+	
+	const Str? c02
 }
 
 @Js

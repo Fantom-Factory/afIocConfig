@@ -11,16 +11,24 @@ internal const class ConfigDependencyProvider : DependencyProvider {
 	new make(|This|in) { in(this) }
 
 	override Bool canProvide(Scope scope, InjectionCtx ctx) {
-		ctx.isFieldInjection && ctx.field.hasFacet(Config#)
+		if (ctx.isFieldInjection) {
+			if (ctx.field.hasFacet(Config#))
+				return true
+
+			fieldDoc := ctx.field.doc
+			if (fieldDoc != null && fieldDoc.contains("@config"))
+				return true
+		}
+		return false
 	}
 
 	override Obj? provide(Scope scope, InjectionCtx ctx) {
 		conSrc		:= (ConfigSource) scope.serviceById(ConfigSource#.qname)
-		config		:= (Config) ctx.field.facet(Config#)
-		id 			:= config.id
+		config		:= (Config?) ctx.field.facet(Config#, false)
+		id 			:= config?.id ?: ctx.field.name
 		// hasDefault() doesn't exist - see http://fantom.org/forum/topic/2507
 //		optional	:= config.optional ?: (ctx.field.type.isNullable || ctx.field.hasDefault)
-		optional	:= config.optional ?: ctx.field.type.isNullable
+		optional	:= config?.optional ?: ctx.field.type.isNullable
 		
 		if (id != null)
 			return conSrc.get(id, ctx.field.type, !optional)
