@@ -15,7 +15,7 @@ internal class TestIdDefaults : ConfigTest {
 
 	Void testDefaultIdNotFound() {
 		reg := RegistryBuilder().addModule(T_MyModule02#).build
-		verifyErrMsg(IocErr#, ErrMsgs.couldNotDetermineId(T_MyService05#c05, "c05 afIocConfig.c05 afIocConfig.t_MyService05.c05 t_MyService05.c05".split)) {
+		verifyErrMsg(IocErr#, "Could not determine config ID for field 'afIocConfig::T_MyService05.c05' - tried 'c05', 'afIocConfig.c05', 'afIocConfig.t_MyService05.c05', 't_MyService05.c05'") {
 			reg.rootScope.build(T_MyService05#)
 		}
 	}

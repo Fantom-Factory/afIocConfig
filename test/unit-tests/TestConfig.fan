@@ -41,7 +41,7 @@ internal class TestConfig : ConfigTest {
 
 	Void testConfigNotExist() {
 		reg := RegistryBuilder().addModule(T_MyModule01#).build
-		verifyErrMsg(IocErr#, ErrMsgs.configNotFound("c04")) {
+		verifyErrMsg(IocErr#, "Config id 'c04' does not exist") {
 			s02	:= (T_MyService02) reg.rootScope.serviceById("s02")			
 		}
 	}

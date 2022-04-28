@@ -75,7 +75,7 @@ internal const class ConfigSourceImpl : ConfigSource {
 	
 	override Obj? get(Str id, Type? coerceTo := null, Bool checked := true) {
 		if (!config.containsKey(id))
-			return checked ? throw ConfigNotFoundErr(ErrMsgs.configNotFound(id), config.keys) : null 
+			return checked ? throw ConfigNotFoundErr("Config id '$id' does not exist", config.keys) : null 
 		value := config[id]
 		if (value == null) 
 			return null 

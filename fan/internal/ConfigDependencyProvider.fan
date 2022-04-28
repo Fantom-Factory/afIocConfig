@@ -35,8 +35,12 @@ internal const class ConfigDependencyProvider : DependencyProvider {
 		if (name == null)
 			name = conSrc.config.keys.find { this.fromDisplayName(it).equalsIgnoreCase(field) }
 
-		if (name == null)
-			return optional ? null : throw ConfigNotFoundErr(ErrMsgs.couldNotDetermineId(ctx.field, qnames), conSrc.config.keys)
+		if (name == null) {
+			if (optional)
+				return null
+			msg := "Could not determine config ID for field '${ctx.field.qname}' - tried " + qnames.join(", ") { "'${it}'" }
+			throw ConfigNotFoundErr(msg, conSrc.config.keys)
+		}
 
 		value 	:= conSrc.get(name, ctx.field.type)
 		return value
